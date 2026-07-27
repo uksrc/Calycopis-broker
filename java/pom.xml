@@ -69,7 +69,7 @@
         <repository>
             <id>nexus-uksrc</id>
             <name>IVOA packages in the UKSRC Nexus</name>
-            <url>https://repo.dev.uksrc.org/maven-public/*</url>
+            <url>https://repo.dev.uksrc.org/maven-public</url>
             <snapshots>
               <enabled>true</enabled>
             </snapshots>
