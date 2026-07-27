@@ -65,12 +65,21 @@
     </properties>
 
     <repositories>
+
+        <repository>
+            <id>nexus-uksrc</id>
+            <name>IVOA packages in the UKSRC Nexus</name>
+            <url>https://repo.dev.uksrc.org/maven-public/*</url>
+            <snapshots>
+              <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
         <!--+
             | This requires a personal access token with package:read
             | permissions in the user's ~/m2/settings.xml file.
             | https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#installing-a-package
             | https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#authenticating-to-github-packages
-            +-->
         <repository>
             <id>github-ivoa</id>
             <name>IVOA packages on GitHub</name>
@@ -79,6 +88,7 @@
               <enabled>true</enabled>
             </snapshots>
         </repository>
+            +-->
         <!--+
             | This embeds a personal access token with package:read
             | permissions in the repository URL.
