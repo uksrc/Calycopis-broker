@@ -316,6 +316,23 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <docker>
+                        <host>${env.CONTAINER_HOST}</host>
+                        <bindHostToBuilder>true</bindHostToBuilder>
+                    </docker>
+                    <image>
+                        <name>ghcr.io/uksrc/calycopis/${project.artifactId}:${project.version}</name>
+                        <createdDate>${maven.build.timestamp}</createdDate>
+                    </image>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-image-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
