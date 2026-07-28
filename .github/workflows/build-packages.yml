@@ -116,7 +116,7 @@ jobs:
 
       - name: Publish the JAR to the IVOA GitHub repository.
         if: >
-            github.repository == 'ivoa/Calycopis-openapi' &&
+            github.repository == 'ivoa/Calycopis-broker' &&
             github.event_name == 'push' &&
             github.ref_name == 'main'
         working-directory: java

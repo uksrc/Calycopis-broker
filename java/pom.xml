@@ -343,6 +343,9 @@
                         <createdDate>${maven.build.timestamp}</createdDate>
                     </image>
                 </configuration>
+                <!--+
+                    | Remove the automatic execution.
+                    | Gives us separate commands for creating the jar and creating the container.
                 <executions>
                     <execution>
                         <goals>
@@ -350,6 +353,7 @@
                         </goals>
                     </execution>
                 </executions>
+                    +-->
             </plugin>
         </plugins>
     </build>
