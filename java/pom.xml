@@ -324,6 +324,9 @@
     <build>
         <plugins>
             <plugin>
+                <!--+
+                    | https://docs.spring.io/spring-boot/maven-plugin/build-image.html
+                    +-->
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -333,6 +336,10 @@
                     </docker>
                     <image>
                         <name>ghcr.io/uksrc/calycopis/${project.artifactId}:${project.version}</name>
+                        <!--+
+                            | https://stackoverflow.com/questions/62865594/spring-boot-2-3-0-buildpack-builds-image-with-creation-date-40-years-ago
+                            | https://stackoverflow.com/a/78096200
+                            +-->
                         <createdDate>${maven.build.timestamp}</createdDate>
                     </image>
                 </configuration>
