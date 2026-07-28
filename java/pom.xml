@@ -35,23 +35,23 @@
     |
     +-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.1.0</version>
-		<relativePath/>
-	</parent>
-	<groupId>net.ivoa.calycopis</groupId>
-	<artifactId>calycopis-broker</artifactId>
-	<version>1.0.7-SNAPSHOT</version>
-	<packaging>jar</packaging>
-	<name>Calycopis broker webapp</name>
-	<description>IVOA ExecutionBroker Spring Boot implementation</description>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.0</version>
+        <relativePath/>
+    </parent>
+    <groupId>net.ivoa.calycopis</groupId>
+    <artifactId>calycopis-broker</artifactId>
+    <version>1.0.7-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>Calycopis broker webapp</name>
+    <description>IVOA ExecutionBroker Spring Boot implementation</description>
 
-	<properties>
-		<java.version>21</java.version>
+    <properties>
+        <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!--+
@@ -62,15 +62,24 @@
             +-->
         <maven.compiler.proc>full</maven.compiler.proc>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    </properties>
 
     <repositories>
+
+        <repository>
+            <id>nexus-uksrc</id>
+            <name>IVOA packages in the UKSRC Nexus</name>
+            <url>https://repo.dev.uksrc.org/repository/maven-public/</url>
+            <snapshots>
+              <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
         <!--+
             | This requires a personal access token with package:read
             | permissions in the user's ~/m2/settings.xml file.
             | https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#installing-a-package
             | https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#authenticating-to-github-packages
-            +-->
         <repository>
             <id>github-ivoa</id>
             <name>IVOA packages on GitHub</name>
@@ -79,6 +88,7 @@
               <enabled>true</enabled>
             </snapshots>
         </repository>
+            +-->
         <!--+
             | This embeds a personal access token with package:read
             | permissions in the repository URL.
@@ -96,7 +106,7 @@
             +-->
     </repositories>
 
-	<dependencies>
+    <dependencies>
         <!--+
             | Include the Spring Boot classes generated from the schema.
             | https://github.com/Zarquan/Calycopis-schema
@@ -112,7 +122,7 @@
         <dependency>
             <groupId>net.ivoa.calycopis</groupId>
             <artifactId>skaha-client</artifactId>
-        	<version>0.1-SNAPSHOT</version>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
             +-->
 
@@ -214,11 +224,11 @@
             <version>1.14.0</version>
         </dependency>
 
-    	<dependency>
-        	<groupId>wtf.metio.storage-units</groupId>
-        	<artifactId>storage-units-model</artifactId>
-        	<version>2025.8.6</version>
-    	</dependency>
+        <dependency>
+            <groupId>wtf.metio.storage-units</groupId>
+            <artifactId>storage-units-model</artifactId>
+            <version>2025.8.6</version>
+        </dependency>
 
         <!--+
             | Spring Security and OAuth2 Resource Server.
@@ -238,19 +248,19 @@
             | (versions are managed by SpringBoot)
             +-->
         <dependency>
-	        <groupId>org.springframework.boot</groupId>
-	        <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -309,14 +319,38 @@
             <version>3.4.1</version>
         </dependency>
 
-	</dependencies>
+    </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <!--+
+                    | https://docs.spring.io/spring-boot/maven-plugin/build-image.html
+                    +-->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <docker>
+                        <host>${env.CONTAINER_HOST}</host>
+                        <bindHostToBuilder>true</bindHostToBuilder>
+                    </docker>
+                    <image>
+                        <name>ghcr.io/uksrc/calycopis/${project.artifactId}:${project.version}</name>
+                        <!--+
+                            | https://stackoverflow.com/questions/62865594/spring-boot-2-3-0-buildpack-builds-image-with-creation-date-40-years-ago
+                            | https://stackoverflow.com/a/78096200
+                            +-->
+                        <createdDate>${maven.build.timestamp}</createdDate>
+                    </image>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-image-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
