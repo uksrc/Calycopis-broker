@@ -49,6 +49,10 @@ jobs:
         with:
           start-service: 'true'
 
+      - name: Check the CONTAINER_HOST for Podman
+        run: |
+            echo "CONTAINER_HOST [${{env.CONTAINER_HOST}}]"
+
       - name: Setup Java
         uses: actions/setup-java@v5
         with:
@@ -141,24 +145,23 @@ jobs:
             --batch-mode \
             spring-boot:build-image
 
-      - name: Echo outputs
+      - name: Check the images in our cache
         run: |
-          echo "${{ toJSON(steps.build-image.outputs) }}"
+          podman images
 
-#     # Push the image to GHCR (Image Registry)
-#     - name: Push the image to GHCR
-#       uses: redhat-actions/push-to-registry@v3
-#       id: push-ghcr
-#       with:
-#         image: ${{ steps.build_image.outputs.image }}
-#         tags: ${{ steps.build_image.outputs.tags }}
-#         registry: ${{ ghcr.io/ivoa }}
-#         username: ${{ github.actor }}
-#         password: ${{ github.token }}
+      - name: Push the image to the IVOA GitHub registry
+        uses: redhat-actions/push-to-registry@v3
+        id: push-ivoa-ghcr
+        with:
+          image: 'ghcr.io/uksrc/calycopis/calycopis-broker'
+          tags: ${{ env.pomversion }}
+          registry: 'ghcr.io/ivoa'
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
 #         extra-args: |
 #           --disable-content-trust
 
-#     - name: Echo outputs
-#       run: |
-#         echo "${{ toJSON(steps.push-ghcr.outputs) }}"
+      - name: Echo outputs
+        run: |
+          echo "${{ toJSON(steps.push-ivoa-ghcr.outputs) }}"
 
