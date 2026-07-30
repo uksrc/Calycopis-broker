@@ -184,9 +184,20 @@ jobs:
         with:
           image: 'calycopis/calycopis-broker'
           tags: ${{ env.pomversion }}
-          registry: 'ghcr.io/ivoa'
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
+          registry: ${{ vars.HARBOR_REGISTRY }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+#     - name: Push the image to the IVOA GitHub registry
+#       uses: redhat-actions/push-to-registry@v3
+#       id: push-ivoa-ghcr
+#       with:
+#         image: 'calycopis/calycopis-broker'
+#         tags: ${{ env.pomversion }}
+#         registry: 'ghcr.io/ivoa'
+#         username: ${{ github.actor }}
+#         password: ${{ github.token }}
+
 #         extra-args: |
 #           --disable-content-trust
 
