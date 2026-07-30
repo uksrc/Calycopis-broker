@@ -49,7 +49,31 @@ jobs:
         with:
           start-service: 'true'
 
-      - name: Check the CONTAINER_HOST for Podman
+      - name: Check the Podman CONTAINER_HOST
+        run: |
+            echo "CONTAINER_HOST [${{env.CONTAINER_HOST}}]"
+
+      - name: Set the Podman CONTAINER_HOST
+        shell: bash
+        run: |
+            unset CONTAINER_HOST
+            unset CONTAINER_PATH
+
+            export CONTAINER_PATH=$(
+                podman info --format '{{.Host.RemoteSocket.Path}}'
+                )
+
+            if [[ ${CONTAINER_PATH} == unix://* ]]
+            then
+                CONTAINER_HOST=${CONTAINER_PATH}
+                CONTAINER_PATH=${CONTAINER_PATH#unix://}
+            else
+                CONTAINER_HOST=unix://${CONTAINER_PATH}
+            fi
+
+            export CONTAINER_HOST
+
+      - name: Check the Podman CONTAINER_HOST
         run: |
             echo "CONTAINER_HOST [${{env.CONTAINER_HOST}}]"
 
@@ -137,7 +161,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Package the broker in a OCI container
+      - name: Package the broker in an OCI container
         id: build-image
         working-directory: java
         run: |
@@ -145,15 +169,19 @@ jobs:
             --batch-mode \
             spring-boot:build-image
 
-      - name: Check the images in our cache
+      - name: Check the images in our Podman cache
         run: |
           podman images
+
+      - name: Check the images in our Docker cache
+        run: |
+          docker images
 
       - name: Push the image to the IVOA GitHub registry
         uses: redhat-actions/push-to-registry@v3
         id: push-ivoa-ghcr
         with:
-          image: 'ghcr.io/uksrc/calycopis/calycopis-broker'
+          image: 'calycopis/calycopis-broker'
           tags: ${{ env.pomversion }}
           registry: 'ghcr.io/ivoa'
           username: ${{ github.actor }}
