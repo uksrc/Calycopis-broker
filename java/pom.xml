@@ -333,6 +333,9 @@
                     <docker>
                         <host>${env.CONTAINER_HOST}</host>
                         <bindHostToBuilder>true</bindHostToBuilder>
+                        <publishRegistry>
+                            <url>localhost</url>
+                        </publishRegistry>
                     </docker>
                     <image>
                         <!--name>ghcr.io/uksrc/calycopis/${project.artifactId}:${project.version}</name-->
