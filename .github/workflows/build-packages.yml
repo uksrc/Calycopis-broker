@@ -178,9 +178,15 @@ jobs:
         run: |
           docker images
 
-      - name: Push the image to the IVOA GitHub registry
+      - name: Check our environment variables
+        run: |
+            echo "HARBOR_REGISTRY [${{vars.HARBOR_REGISTRY}}]"
+            echo "HARBOR_USERNAME [${{secrets.HARBOR_USERNAME}}]"
+            echo "HARBOR_PASSWORD [${{secrets.HARBOR_PASSWORD}}]"
+
+      - name: Push the image to the UKSRC Harbor registry
         uses: redhat-actions/push-to-registry@v3
-        id: push-ivoa-ghcr
+        id: push-uksrc-harbor
         with:
           image: 'calycopis/calycopis-broker'
           tags: ${{ env.pomversion }}
