@@ -59,7 +59,7 @@ jobs:
             unset CONTAINER_HOST
             unset CONTAINER_PATH
 
-            export CONTAINER_PATH=$(
+            CONTAINER_PATH=$(
                 podman info --format '{{.Host.RemoteSocket.Path}}'
                 )
 
@@ -71,7 +71,8 @@ jobs:
                 CONTAINER_HOST=unix://${CONTAINER_PATH}
             fi
 
-            export CONTAINER_HOST
+            echo "CONTAINER_PATH=${CONTAINER_PATH}" >> "$GITHUB_ENV"
+            echo "CONTAINER_HOST=${CONTAINER_HOST}" >> "$GITHUB_ENV"
 
       - name: Check the Podman CONTAINER_HOST
         run: |
