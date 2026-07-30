@@ -158,7 +158,7 @@ jobs:
 #         extra-args: |
 #           --disable-content-trust
 
-      - name: Echo outputs
-        run: |
-          echo "${{ toJSON(steps.push-ghcr.outputs) }}"
+#     - name: Echo outputs
+#       run: |
+#         echo "${{ toJSON(steps.push-ghcr.outputs) }}"
 
