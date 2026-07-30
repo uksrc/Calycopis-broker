@@ -36,6 +36,9 @@ jobs:
       contents: read
       packages: write
 
+    env:
+      HARBOR_REGISTRY: images.dev.uksrc.org
+
     steps:
 
       # https://github.com/actions/checkout
@@ -180,7 +183,7 @@ jobs:
 
       - name: Check our environment variables
         run: |
-            echo "HARBOR_REGISTRY [${{vars.HARBOR_REGISTRY}}]"
+            echo "HARBOR_REGISTRY [${{env.HARBOR_REGISTRY}}]"
             echo "HARBOR_USERNAME [${{secrets.HARBOR_USERNAME}}]"
             echo "HARBOR_PASSWORD [${{secrets.HARBOR_PASSWORD}}]"
 
@@ -190,7 +193,7 @@ jobs:
         with:
           image: 'calycopis/calycopis-broker'
           tags: ${{ env.pomversion }}
-          registry: ${{ vars.HARBOR_REGISTRY }}
+          registry: ${{ env.HARBOR_REGISTRY }}
           username: ${{ secrets.HARBOR_USERNAME }}
           password: ${{ secrets.HARBOR_PASSWORD }}
 
