@@ -137,10 +137,10 @@ jobs:
           path: 'java/target/calycopis-broker-${{env.pomversion}}.jar'
 
       - name: Publish the JAR to the UKSRC Nexus repository.
-        if: >
-            github.repository == 'uksrc/Calycopis-broker' &&
-            github.event_name == 'push' &&
-            github.ref_name == 'main'
+#       if: >
+#           github.repository == 'uksrc/Calycopis-broker' &&
+#           github.event_name == 'push' &&
+#           github.ref_name == 'main'
         working-directory: java
         run: |
           ./mvnw \
@@ -180,19 +180,6 @@ jobs:
       - name: Check the images in our Docker cache
         run: |
           docker images
-
-      - name: Check our environment variables
-        run: |
-            echo "HARBOR_REGISTRY [${{env.HARBOR_REGISTRY}}]"
-            echo "HARBOR_USERNAME [${{env.HARBOR_USERNAME}}]"
-            echo "HARBOR_PASSWORD [${{env.HARBOR_PASSWORD}}]"
-            echo "UKSRC_REPO_USERNAME [${{env.UKSRC_REPO_USERNAME}}]"
-            echo "UKSRC_REPO_PASSWORD [${{env.UKSRC_REPO_PASSWORD}}]"
-        env:
-          HARBOR_USERNAME: ${{secrets.HARBOR_USERNAME}}
-          HARBOR_PASSWORD: ${{secrets.HARBOR_PASSWORD}}
-          UKSRC_REPO_USERNAME: ${{ secrets.UKSRC_REPO_USERNAME }}
-          UKSRC_REPO_PASSWORD: ${{ secrets.UKSRC_REPO_PASSWORD }}
 
       - name: Check our environment variables
         run: |
