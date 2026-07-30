@@ -333,13 +333,10 @@
                     <docker>
                         <host>${env.CONTAINER_HOST}</host>
                         <bindHostToBuilder>true</bindHostToBuilder>
-                        <publishRegistry>
-                            <url>localhost</url>
-                        </publishRegistry>
                     </docker>
                     <image>
                         <!--name>ghcr.io/uksrc/calycopis/${project.artifactId}:${project.version}</name-->
-                        <name>calycopis/${project.artifactId}:${project.version}</name>
+                        <name>localhost/calycopis/${project.artifactId}:${project.version}</name>
                         <!--+
                             | https://stackoverflow.com/questions/62865594/spring-boot-2-3-0-buildpack-builds-image-with-creation-date-40-years-ago
                             | https://stackoverflow.com/a/78096200
