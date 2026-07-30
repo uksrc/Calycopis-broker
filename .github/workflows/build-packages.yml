@@ -186,6 +186,8 @@ jobs:
             echo "HARBOR_REGISTRY [${{env.HARBOR_REGISTRY}}]"
             echo "HARBOR_USERNAME [${{secrets.HARBOR_USERNAME}}]"
             echo "HARBOR_PASSWORD [${{secrets.HARBOR_PASSWORD}}]"
+            echo "UKSRC_REPO_USERNAME [${{secrets.UKSRC_REPO_USERNAME}}]"
+            echo "UKSRC_REPO_PASSWORD [${{secrets.UKSRC_REPO_PASSWORD}}]"
 
       - name: Push the image to the UKSRC Harbor registry
         uses: redhat-actions/push-to-registry@v3
