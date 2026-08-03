@@ -16,7 +16,7 @@
 # A GitHub workflow to build and publish the broker packages.
 #
 
-name: Calycopis broker service
+name: Calycopis broker packages
 
 on:
   push:
@@ -97,6 +97,16 @@ jobs:
         run: |
             cat ~/.m2/settings.xml
 
+      - name: Check our environment variables
+        run: |
+            echo "TEST_ENV [${TEST_ENV}]"
+            echo "TEST_VAR [${TEST_VAR}]"
+            echo "TEST_SECRET [${TEST_SECRET}]"
+        env:
+          TEST_ENV: ${{env.TEST_ENV}}
+          TEST_VAR: ${{vars.TEST_VAR}}
+          TEST_SECRET: ${{secrets.TEST_SECRET}}
+
       # https://github.com/actions/cache/blob/main/examples.md#java---maven
       - name: Cache our Maven dependencies
         uses: actions/cache@v6
@@ -137,10 +147,10 @@ jobs:
           path: 'java/target/calycopis-broker-${{env.pomversion}}.jar'
 
       - name: Publish the JAR to the UKSRC Nexus repository.
-#       if: >
-#           github.repository == 'uksrc/Calycopis-broker' &&
-#           github.event_name == 'push' &&
-#           github.ref_name == 'main'
+        if: >
+            github.repository == 'uksrc/Calycopis-broker' &&
+            github.event_name == 'push' &&
+            github.ref_name == 'main'
         working-directory: java
         run: |
           ./mvnw \
@@ -181,22 +191,13 @@ jobs:
         run: |
           docker images
 
-      - name: Check our environment variables
-        run: |
-            echo "HARBOR_REGISTRY [${HARBOR_REGISTRY}]"
-            echo "HARBOR_USERNAME [${HARBOR_USERNAME}]"
-            echo "HARBOR_PASSWORD [${HARBOR_PASSWORD}]"
-            echo "UKSRC_REPO_USERNAME [${UKSRC_REPO_USERNAME}]"
-            echo "UKSRC_REPO_PASSWORD [${UKSRC_REPO_PASSWORD}]"
-        env:
-          HARBOR_USERNAME: ${{secrets.HARBOR_USERNAME}}
-          HARBOR_PASSWORD: ${{secrets.HARBOR_PASSWORD}}
-          UKSRC_REPO_USERNAME: ${{ secrets.UKSRC_REPO_USERNAME }}
-          UKSRC_REPO_PASSWORD: ${{ secrets.UKSRC_REPO_PASSWORD }}
-
       - name: Push the image to the UKSRC Harbor registry
         uses: redhat-actions/push-to-registry@v3
         id: push-uksrc-harbor
+        if: >
+            github.repository == 'uksrc/Calycopis-broker' &&
+            github.event_name == 'push' &&
+            github.ref_name == 'main'
         with:
           image: 'calycopis/calycopis-broker'
           tags: ${{ env.pomversion }}
