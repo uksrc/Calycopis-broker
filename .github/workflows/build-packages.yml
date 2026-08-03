@@ -1,0 +1,224 @@
+#
+# <meta:header>
+#   <meta:licence>
+#     Copyright (c) 2026, Manchester University (http://www.manchester.ac.uk/)
+#
+#     This work is made available under the Creative Commons
+#     Attribution-ShareAlike 4.0 International licence.
+#
+#     For details of the licence terms see:
+#     https://creativecommons.org/licenses/by-sa/4.0/
+#   </meta:licence>
+# </meta:header>
+#
+# AIMetrics: []
+#
+# A GitHub workflow to build and publish the broker packages.
+#
+
+name: Calycopis broker packages
+
+on:
+  push:
+    branches:
+      - 'main'
+
+  pull_request:
+
+  workflow_dispatch:
+
+jobs:
+
+  build-java-broker:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    env:
+      HARBOR_REGISTRY: images.dev.uksrc.org
+
+    steps:
+
+      # https://github.com/actions/checkout
+      - name: Checkout the schema project
+        uses: actions/checkout@v7
+        with:
+          submodules: 'true'
+
+      - name: Install Podman with socket service
+        uses: redhat-actions/podman-install@v1
+        with:
+          start-service: 'true'
+
+      - name: Check the Podman CONTAINER_HOST
+        run: |
+            echo "CONTAINER_HOST [${{env.CONTAINER_HOST}}]"
+
+      - name: Set the Podman CONTAINER_HOST
+        shell: bash
+        run: |
+            unset CONTAINER_HOST
+            unset CONTAINER_PATH
+
+            CONTAINER_PATH=$(
+                podman info --format '{{.Host.RemoteSocket.Path}}'
+                )
+
+            if [[ ${CONTAINER_PATH} == unix://* ]]
+            then
+                CONTAINER_HOST=${CONTAINER_PATH}
+                CONTAINER_PATH=${CONTAINER_PATH#unix://}
+            else
+                CONTAINER_HOST=unix://${CONTAINER_PATH}
+            fi
+
+            echo "CONTAINER_PATH=${CONTAINER_PATH}" >> "$GITHUB_ENV"
+            echo "CONTAINER_HOST=${CONTAINER_HOST}" >> "$GITHUB_ENV"
+
+      - name: Check the Podman CONTAINER_HOST
+        run: |
+            echo "CONTAINER_HOST [${{env.CONTAINER_HOST}}]"
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+
+      - name: Install our Maven settings
+        run: |
+            mkdir -p ~/.m2
+            cp -f java/settings.xml \
+                  ~/.m2/settings.xml
+
+      - name: Check our Maven settings
+        run: |
+            cat ~/.m2/settings.xml
+
+      - name: Check our environment variables
+        run: |
+            echo "TEST_ENV [${TEST_ENV}]"
+            echo "TEST_VAR [${TEST_VAR}]"
+            echo "TEST_SECRET [${TEST_SECRET}]"
+        env:
+          TEST_ENV: ${{env.TEST_ENV}}
+          TEST_VAR: ${{vars.TEST_VAR}}
+          TEST_SECRET: ${{secrets.TEST_SECRET}}
+
+      # https://github.com/actions/cache/blob/main/examples.md#java---maven
+      - name: Cache our Maven dependencies
+        uses: actions/cache@v6
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build the Java jar file
+        working-directory: java
+        run: |
+          ./mvnw \
+            --batch-mode \
+            clean install
+
+      - name: Get the Maven POM version
+        working-directory: java
+        run: |
+          echo "pomversion=$(
+              ./mvnw \
+                  --quiet \
+                  help:evaluate \
+                  -Dexpression=project.version \
+                  -DforceStdout \
+                  2> /dev/null
+              )" \
+              >> "$GITHUB_ENV"
+
+      - name: Check the Maven POM version
+        run: |
+            echo "POM version [${{env.pomversion}}]"
+
+      - name: Upload the Java JAR as a GitHub artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: 'calycopis-broker-'
+          path: 'java/target/calycopis-broker-${{env.pomversion}}.jar'
+
+      - name: Publish the JAR to the UKSRC Nexus repository.
+        if: >
+            github.repository == 'uksrc/Calycopis-broker' &&
+            github.event_name == 'push' &&
+            github.ref_name == 'main'
+        working-directory: java
+        run: |
+          ./mvnw \
+            --batch-mode \
+            deploy \
+              -Puksrc-profile
+        env:
+          UKSRC_REPO_USERNAME: ${{ secrets.UKSRC_REPO_USERNAME }}
+          UKSRC_REPO_PASSWORD: ${{ secrets.UKSRC_REPO_PASSWORD }}
+
+      - name: Publish the JAR to the IVOA GitHub repository.
+        if: >
+            github.repository == 'ivoa/Calycopis-broker' &&
+            github.event_name == 'push' &&
+            github.ref_name == 'main'
+        working-directory: java
+        run: |
+          ./mvnw \
+            --batch-mode \
+            deploy \
+              -Pivoa-profile
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Package the broker in an OCI container
+        id: build-image
+        working-directory: java
+        run: |
+          ./mvnw \
+            --batch-mode \
+            spring-boot:build-image
+
+      - name: Check the images in our Podman cache
+        run: |
+          podman images
+
+      - name: Check the images in our Docker cache
+        run: |
+          docker images
+
+      - name: Push the image to the UKSRC Harbor registry
+        uses: redhat-actions/push-to-registry@v3
+        id: push-uksrc-harbor
+        if: >
+            github.repository == 'uksrc/Calycopis-broker' &&
+            github.event_name == 'push' &&
+            github.ref_name == 'main'
+        with:
+          image: 'calycopis/calycopis-broker'
+          tags: ${{ env.pomversion }}
+          registry: ${{ env.HARBOR_REGISTRY }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+#     - name: Push the image to the IVOA GitHub registry
+#       uses: redhat-actions/push-to-registry@v3
+#       id: push-ivoa-ghcr
+#       with:
+#         image: 'calycopis/calycopis-broker'
+#         tags: ${{ env.pomversion }}
+#         registry: 'ghcr.io/ivoa'
+#         username: ${{ github.actor }}
+#         password: ${{ github.token }}
+
+#         extra-args: |
+#           --disable-content-trust
+
+      - name: Echo outputs
+        run: |
+          echo "${{ toJSON(steps.push-ivoa-ghcr.outputs) }}"
+
