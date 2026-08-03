@@ -16,7 +16,7 @@
 # A GitHub workflow to build and publish the broker packages.
 #
 
-name: Calycopis broker service
+name: Calycopis broker packages
 
 on:
   push:
@@ -36,6 +36,9 @@ jobs:
       contents: read
       packages: write
 
+    env:
+      HARBOR_REGISTRY: images.dev.uksrc.org
+
     steps:
 
       # https://github.com/actions/checkout
@@ -43,6 +46,40 @@ jobs:
         uses: actions/checkout@v7
         with:
           submodules: 'true'
+
+      - name: Install Podman with socket service
+        uses: redhat-actions/podman-install@v1
+        with:
+          start-service: 'true'
+
+      - name: Check the Podman CONTAINER_HOST
+        run: |
+            echo "CONTAINER_HOST [${{env.CONTAINER_HOST}}]"
+
+      - name: Set the Podman CONTAINER_HOST
+        shell: bash
+        run: |
+            unset CONTAINER_HOST
+            unset CONTAINER_PATH
+
+            CONTAINER_PATH=$(
+                podman info --format '{{.Host.RemoteSocket.Path}}'
+                )
+
+            if [[ ${CONTAINER_PATH} == unix://* ]]
+            then
+                CONTAINER_HOST=${CONTAINER_PATH}
+                CONTAINER_PATH=${CONTAINER_PATH#unix://}
+            else
+                CONTAINER_HOST=unix://${CONTAINER_PATH}
+            fi
+
+            echo "CONTAINER_PATH=${CONTAINER_PATH}" >> "$GITHUB_ENV"
+            echo "CONTAINER_HOST=${CONTAINER_HOST}" >> "$GITHUB_ENV"
+
+      - name: Check the Podman CONTAINER_HOST
+        run: |
+            echo "CONTAINER_HOST [${{env.CONTAINER_HOST}}]"
 
       - name: Setup Java
         uses: actions/setup-java@v5
@@ -59,6 +96,16 @@ jobs:
       - name: Check our Maven settings
         run: |
             cat ~/.m2/settings.xml
+
+      - name: Check our environment variables
+        run: |
+            echo "TEST_ENV [${TEST_ENV}]"
+            echo "TEST_VAR [${TEST_VAR}]"
+            echo "TEST_SECRET [${TEST_SECRET}]"
+        env:
+          TEST_ENV: ${{env.TEST_ENV}}
+          TEST_VAR: ${{vars.TEST_VAR}}
+          TEST_SECRET: ${{secrets.TEST_SECRET}}
 
       # https://github.com/actions/cache/blob/main/examples.md#java---maven
       - name: Cache our Maven dependencies
@@ -126,12 +173,52 @@ jobs:
             deploy \
               -Pivoa-profile
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Package the broker in a OCI container
+      - name: Package the broker in an OCI container
+        id: build-image
         working-directory: java
         run: |
           ./mvnw \
             --batch-mode \
             spring-boot:build-image
+
+      - name: Check the images in our Podman cache
+        run: |
+          podman images
+
+      - name: Check the images in our Docker cache
+        run: |
+          docker images
+
+      - name: Push the image to the UKSRC Harbor registry
+        uses: redhat-actions/push-to-registry@v3
+        id: push-uksrc-harbor
+        if: >
+            github.repository == 'uksrc/Calycopis-broker' &&
+            github.event_name == 'push' &&
+            github.ref_name == 'main'
+        with:
+          image: 'calycopis/calycopis-broker'
+          tags: ${{ env.pomversion }}
+          registry: ${{ env.HARBOR_REGISTRY }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+#     - name: Push the image to the IVOA GitHub registry
+#       uses: redhat-actions/push-to-registry@v3
+#       id: push-ivoa-ghcr
+#       with:
+#         image: 'calycopis/calycopis-broker'
+#         tags: ${{ env.pomversion }}
+#         registry: 'ghcr.io/ivoa'
+#         username: ${{ github.actor }}
+#         password: ${{ github.token }}
+
+#         extra-args: |
+#           --disable-content-trust
+
+      - name: Echo outputs
+        run: |
+          echo "${{ toJSON(steps.push-ivoa-ghcr.outputs) }}"
 
