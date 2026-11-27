@@ -35,7 +35,7 @@
 
 package net.ivoa.calycopis.broker.engine.entities.data;
 
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 import net.ivoa.calycopis.broker.engine.functional.validator.Validator;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractDataResource;
 
@@ -59,7 +59,7 @@ extends Validator<IvoaAbstractDataResource, AbstractDataResourceEntity>
          * Get the storage resource validator result for this data resource.
          * 
          */
-        public AbstractStorageResourceValidator.Result getStorageResult();
+        public AbstractStorageReservationValidator.Result getStorageResult();
         
         }
 
@@ -82,13 +82,13 @@ extends Validator<IvoaAbstractDataResource, AbstractDataResourceEntity>
             }
 
         /**
-         * Protected constructor with a ResultEnum, IvoaAbstractDataResource, and StorageResource .
+         * Protected constructor with a ResultEnum, IvoaAbstractDataResource, and StorageReservation .
          * 
          */
         protected ResultBean(
             final ResultEnum result,
             final IvoaAbstractDataResource object,
-            final AbstractStorageResourceValidator.Result storageResult
+            final AbstractStorageReservationValidator.Result storageResult
             ){
             super(
                 result,
@@ -98,9 +98,9 @@ extends Validator<IvoaAbstractDataResource, AbstractDataResourceEntity>
             this.storageResult = storageResult;
             }
 
-        private AbstractStorageResourceValidator.Result storageResult;
+        private AbstractStorageReservationValidator.Result storageResult;
         @Override
-        public AbstractStorageResourceValidator.Result getStorageResult()
+        public AbstractStorageReservationValidator.Result getStorageResult()
             {
             return this.storageResult;
             }

@@ -71,8 +71,8 @@ import jakarta.persistence.Table;
 import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.component.LifecycleComponentEntity;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResource;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservation;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountEntity;
 import net.ivoa.calycopis.broker.engine.util.URIBuilder;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractDataResource;
@@ -109,7 +109,7 @@ implements AbstractDataResource
      */
     protected AbstractDataResourceEntity(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceEntity storage,
+        final AbstractStorageReservationEntity storage,
         final AbstractDataResourceValidator.Result result
         ){
         super(
@@ -157,13 +157,13 @@ implements AbstractDataResource
     
     @JoinColumn(name = "storage", referencedColumnName = "uuid", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private AbstractStorageResourceEntity storage;
+    private AbstractStorageReservationEntity storage;
     @Override
-    public AbstractStorageResource getStorage()
+    public AbstractStorageReservation getStorage()
         {
         return this.storage;
         }
-    public void setStorage(final AbstractStorageResourceEntity storage)
+    public void setStorage(final AbstractStorageReservationEntity storage)
         {
         this.storage = storage;
         }

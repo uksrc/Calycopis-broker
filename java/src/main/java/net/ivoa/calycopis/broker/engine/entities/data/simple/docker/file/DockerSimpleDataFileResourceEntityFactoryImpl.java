@@ -29,7 +29,7 @@ import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntity
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceValidator;
 import net.ivoa.calycopis.broker.engine.entities.data.simple.docker.DockerSimpleDataResourceEntityFactoryImpl;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 
 /**
  * 
@@ -55,7 +55,7 @@ implements DockerSimpleDataFileResourceEntityFactory
     @Override
     public DockerSimpleDataFileResourceEntity create(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceEntity storage,
+        final AbstractStorageReservationEntity storage,
         final AbstractDataResourceValidator.Result result
         ){
         return this.repository.save(

@@ -33,7 +33,7 @@ import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountEntit
 /**
  * 
  */
-public interface AbstractStorageResource
+public interface AbstractStorageReservation
 extends LifecycleComponent
     {
     

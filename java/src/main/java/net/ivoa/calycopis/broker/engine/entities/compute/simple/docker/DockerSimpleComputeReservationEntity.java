@@ -176,7 +176,7 @@ import net.ivoa.calycopis.broker.engine.entities.executable.docker.DockerContain
 import net.ivoa.calycopis.broker.engine.entities.executable.docker.DockerContainerEntity;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionConnectorEntity;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResource;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservation;
 import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.DockerStorageLinkerImpl;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.simple.SimpleVolumeMountEntity;
@@ -518,7 +518,7 @@ implements DockerSimpleComputeReservation
                     );
                 if (dataResource != null)
                     {
-                    AbstractStorageResource storage = dataResource.getStorage();
+                    AbstractStorageReservation storage = dataResource.getStorage();
                     log.debug(
                         "DataResource [{}] storage [{}]",
                         dataResource.getUuid(),

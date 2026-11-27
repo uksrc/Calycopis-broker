@@ -18,25 +18,25 @@ package net.ivoa.calycopis.broker.engine.entities.storage.simple.mock;
 import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.component.AbstractEntityRepository;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResourceEntityFactoryImpl;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservationEntityFactoryImpl;
 
 /**
  *
  */
 @Slf4j
-public class MockSimpleStorageResourceEntityFactoryImpl
-extends SimpleStorageResourceEntityFactoryImpl
-implements MockSimpleStorageResourceEntityFactory
+public class MockSimpleStorageReservationEntityFactoryImpl
+extends SimpleStorageReservationEntityFactoryImpl
+implements MockSimpleStorageReservationEntityFactory
     {
 
     /**
      * Public constructor used by our Platform.
      * 
      */
-    public MockSimpleStorageResourceEntityFactoryImpl(
-        final AbstractEntityRepository<AbstractStorageResourceEntity> repository
+    public MockSimpleStorageReservationEntityFactoryImpl(
+        final AbstractEntityRepository<AbstractStorageReservationEntity> repository
         ){
         super(
             repository
@@ -44,12 +44,12 @@ implements MockSimpleStorageResourceEntityFactory
         }
 
     @Override
-    public MockSimpleStorageResourceEntity create(
+    public MockSimpleStorageReservationEntity create(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceValidator.Result result
+        final AbstractStorageReservationValidator.Result result
         ){
-        MockSimpleStorageResourceEntity entity = this.repository.save(
-            new MockSimpleStorageResourceEntity(
+        MockSimpleStorageReservationEntity entity = this.repository.save(
+            new MockSimpleStorageReservationEntity(
                 session,
                 result
                 )

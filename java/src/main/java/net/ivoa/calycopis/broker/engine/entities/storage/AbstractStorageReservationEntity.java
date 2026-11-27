@@ -95,21 +95,21 @@ import net.ivoa.calycopis.openapi.spring.model.IvoaLifecyclePhase;
 @Slf4j
 @Entity
 @Table(
-    name = "abstractstorageresources"
+    name = "abstractstoragereservations"
     )
 @Inheritance(
     strategy = InheritanceType.JOINED
     )
-public abstract class AbstractStorageResourceEntity
+public abstract class AbstractStorageReservationEntity
 extends LifecycleComponentEntity
-implements AbstractStorageResource
+implements AbstractStorageReservation
     {
     
     /**
      * Protected constructor for JPA entities.
      * 
      */
-    protected AbstractStorageResourceEntity()
+    protected AbstractStorageReservationEntity()
         {
         super();
         }
@@ -118,9 +118,9 @@ implements AbstractStorageResource
      * Protected constructor used by derived classes.
      * 
      */
-    protected AbstractStorageResourceEntity(
+    protected AbstractStorageReservationEntity(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceValidator.Result result
+        final AbstractStorageReservationValidator.Result result
         ){
         super(
             result.getMeta(),
@@ -128,7 +128,7 @@ implements AbstractStorageResource
             );
 
         this.session = session;
-        this.session.addStorageResource(
+        this.session.addStorageReservation(
             this
             );
 
@@ -201,7 +201,7 @@ implements AbstractStorageResource
 
     public void addVolumeMount(final AbstractVolumeMountEntity volume)
         {
-        volume.setStorageResource(
+        volume.setStorageReservation(
             this
             );
         volumeMounts.add(
@@ -300,7 +300,7 @@ implements AbstractStorageResource
     @Override
     protected URI getWebappPath()
         {
-        return AbstractStorageResource.WEBAPP_PATH;
+        return AbstractStorageReservation.WEBAPP_PATH;
         }
 
     }

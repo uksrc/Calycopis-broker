@@ -132,7 +132,7 @@ import net.ivoa.calycopis.broker.engine.entities.identity.IdentityEntity;
 import net.ivoa.calycopis.broker.engine.entities.profiling.ProfilingEntry;
 import net.ivoa.calycopis.broker.engine.entities.profiling.ProfilingEntryFactory;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountValidator;
 import net.ivoa.calycopis.broker.engine.functional.booking.compute.simple.SimpleComputeOffer;
 import net.ivoa.calycopis.broker.engine.functional.factory.FactoryBaseImpl;
@@ -541,7 +541,7 @@ implements OfferSetRequestParser
                     }
                 //
                 // Add our storage resources.
-                for (AbstractStorageResourceValidator.Result result : offersetContext.getStorageValidatorResults())
+                for (AbstractStorageReservationValidator.Result result : offersetContext.getStorageValidatorResults())
                     {
                     result.build(
                         executionSessionEntity

@@ -25,7 +25,7 @@ package net.ivoa.calycopis.broker.engine.entities.volume.simple.mock;
 
 import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntityFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntityFactory;
 import net.ivoa.calycopis.broker.engine.entities.volume.simple.SimpleVolumeMountEntityFactory;
 import net.ivoa.calycopis.broker.engine.entities.volume.simple.SimpleVolumeMountValidatorImpl;
 import net.ivoa.calycopis.openapi.spring.model.IvoaSimpleVolumeMount;
@@ -46,12 +46,12 @@ implements MockSimpleVolumeMountValidator
     public MockSimpleVolumeMountValidatorImpl(
         final SimpleVolumeMountEntityFactory volumeMountFactory,
         final AbstractDataResourceEntityFactory dataResourceFactory,
-        final AbstractStorageResourceEntityFactory storageResourceFactory
+        final AbstractStorageReservationEntityFactory storageReservationFactory
         ){
         super(
             volumeMountFactory,
             dataResourceFactory,
-            storageResourceFactory
+            storageReservationFactory
             );
         }
 

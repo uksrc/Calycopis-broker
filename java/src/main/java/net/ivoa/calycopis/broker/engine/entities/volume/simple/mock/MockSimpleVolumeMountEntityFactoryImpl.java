@@ -49,7 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.component.AbstractEntityRepository;
 import net.ivoa.calycopis.broker.engine.entities.compute.AbstractComputeReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.simple.SimpleVolumeMountEntityFactoryImpl;
 import net.ivoa.calycopis.broker.engine.entities.volume.simple.SimpleVolumeMountValidator;
@@ -93,7 +93,7 @@ implements MockSimpleVolumeMountEntityFactory
     @Override
     public MockSimpleVolumeMountEntity create(
         final AbstractComputeReservationEntity computeResource,
-        final AbstractStorageResourceEntity storageResource,
+        final AbstractStorageReservationEntity storageResource,
         final SimpleVolumeMountValidator.Result result
         ){
         return this.repository.save(

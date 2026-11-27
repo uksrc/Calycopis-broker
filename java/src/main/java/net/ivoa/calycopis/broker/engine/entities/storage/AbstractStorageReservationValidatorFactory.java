@@ -24,7 +24,7 @@
  *     "version": "2026.02.13-41ac335",
  *     "model": "Claude 4.6 Opus (Thinking)",
  *     "contribution": {
- *       "value": 100,
+ *       "value": 5,
  *       "units": "%"
  *       }
  *     }
@@ -32,14 +32,27 @@
  *
  */
 
-package net.ivoa.calycopis.broker.engine.entities.storage.simple.mock;
+package net.ivoa.calycopis.broker.engine.entities.storage;
 
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResource;
+import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
+import net.ivoa.calycopis.broker.engine.functional.validator.ValidatorFactory;
+import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractStorageResource;
 
 /**
+ * Public interface for a StorageReservation ValidatorFactory.
  * 
  */
-public interface MockSimpleStorageResource
-extends SimpleStorageResource
+public interface AbstractStorageReservationValidatorFactory
+extends AbstractStorageReservationValidator, ValidatorFactory<IvoaAbstractStorageResource, AbstractStorageReservationEntity>
     {
+
+    /**
+     * Validate a storage resource, needed to resolve the inherited generics.
+     * 
+     */
+    public AbstractStorageReservationValidator.Result validateObject(
+        final IvoaAbstractStorageResource object,
+        final OfferSetRequestParserContext context
+        ); 
+    
     }

@@ -86,7 +86,7 @@
 Integration tests for Docker bind mount support with file:// data resources.
 
 Tests that a file:// data resource is correctly linked to a
-DockerBindMountStorage and that the resulting bind mount is
+DockerBindMountStorageReservation and that the resulting bind mount is
 passed to the Docker container at runtime.
 
 Requires:

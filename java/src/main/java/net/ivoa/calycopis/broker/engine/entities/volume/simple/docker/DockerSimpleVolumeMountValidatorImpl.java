@@ -27,7 +27,7 @@ package net.ivoa.calycopis.broker.engine.entities.volume.simple.docker;
 import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntityFactory;
 import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntityFactory;
 import net.ivoa.calycopis.broker.engine.entities.volume.simple.SimpleVolumeMountEntityFactory;
 import net.ivoa.calycopis.broker.engine.entities.volume.simple.SimpleVolumeMountValidatorImpl;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractVolumeMount;
@@ -49,12 +49,12 @@ implements DockerSimpleVolumeMountValidator
     public DockerSimpleVolumeMountValidatorImpl(
         final SimpleVolumeMountEntityFactory volumeMountFactory,
         final AbstractDataResourceEntityFactory dataResourceFactory,
-        final AbstractStorageResourceEntityFactory storageResourceFactory
+        final AbstractStorageReservationEntityFactory storageReservationFactory
         ){
         super(
             volumeMountFactory,
             dataResourceFactory,
-            storageResourceFactory
+            storageReservationFactory
             );
         }
 

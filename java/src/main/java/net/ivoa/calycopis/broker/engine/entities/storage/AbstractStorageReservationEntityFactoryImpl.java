@@ -45,26 +45,26 @@ import net.ivoa.calycopis.broker.engine.functional.factory.FactoryBaseImpl;
  *
  */
 @Slf4j
-public abstract class AbstractStorageResourceEntityFactoryImpl
+public abstract class AbstractStorageReservationEntityFactoryImpl
 extends FactoryBaseImpl
-implements AbstractStorageResourceEntityFactory
+implements AbstractStorageReservationEntityFactory
     {
 
-    protected AbstractEntityRepository<AbstractStorageResourceEntity> repository;
+    protected AbstractEntityRepository<AbstractStorageReservationEntity> repository;
 
     /**
      * Protected constructor.
      *
      */
-    protected AbstractStorageResourceEntityFactoryImpl(
-        final AbstractEntityRepository<AbstractStorageResourceEntity> repository
+    protected AbstractStorageReservationEntityFactoryImpl(
+        final AbstractEntityRepository<AbstractStorageReservationEntity> repository
         ){
         super();
         this.repository = repository;
         }
 
     @Override
-    public Optional<AbstractStorageResourceEntity> select(UUID uuid)
+    public Optional<AbstractStorageReservationEntity> select(UUID uuid)
         {
         return repository.findById(uuid);
         }

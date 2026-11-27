@@ -57,7 +57,7 @@ package net.ivoa.calycopis.broker.engine.entities.volume;
 
 import net.ivoa.calycopis.broker.engine.entities.compute.AbstractComputeReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceValidator;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 import net.ivoa.calycopis.broker.engine.functional.validator.Validator;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractVolumeMount;
 
@@ -92,7 +92,7 @@ extends Validator<IvoaAbstractVolumeMount, AbstractVolumeMountEntity>
          * Get the storage resource result for this volume mount.
          * 
          */
-        public AbstractStorageResourceValidator.Result getStorageResult();
+        public AbstractStorageReservationValidator.Result getStorageResult();
         
         }
     
@@ -122,7 +122,7 @@ extends Validator<IvoaAbstractVolumeMount, AbstractVolumeMountEntity>
             final ResultEnum result,
             final IvoaAbstractVolumeMount object,
             final AbstractDataResourceValidator.Result dataResult,
-            final AbstractStorageResourceValidator.Result storageResult
+            final AbstractStorageReservationValidator.Result storageResult
             ){
             super(
                 result,
@@ -140,9 +140,9 @@ extends Validator<IvoaAbstractVolumeMount, AbstractVolumeMountEntity>
             return this.dataResult;
             }
 
-        private AbstractStorageResourceValidator.Result storageResult;
+        private AbstractStorageReservationValidator.Result storageResult;
         @Override
-        public AbstractStorageResourceValidator.Result getStorageResult()
+        public AbstractStorageReservationValidator.Result getStorageResult()
             {
             return this.storageResult;
             }

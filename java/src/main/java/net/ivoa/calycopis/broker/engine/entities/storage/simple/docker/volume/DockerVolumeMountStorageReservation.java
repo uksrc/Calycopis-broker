@@ -1,7 +1,7 @@
 /*
  * <meta:header>
  *   <meta:licence>
- *     Copyright (C) 2024 University of Manchester.
+ *     Copyright (C) 2026 University of Manchester.
  *
  *     This information is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,25 +21,14 @@
  *
  */
 
-package net.ivoa.calycopis.broker.engine.entities.storage.simple;
+package net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.volume;
 
-import java.net.URI;
-
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResource;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservation;
 
 /**
- * Public interface for a SimpleStorageResource.
- *
+ * 
  */
-public interface SimpleStorageResource
-extends AbstractStorageResource
+public interface DockerVolumeMountStorageReservation
+extends SimpleStorageReservation, DockerVolumeMount
     {
-    
-    /**
-     * The OpenAPI type identifier.
-     * 
-     */
-    public static final URI KIND_DISCRIMINATOR = URI.create("https://www.purl.org/ivoa.net/Calycopis-openapi/schema/v1.0/kinds/storage/simple-storage-resource.yaml") ;
-
     }
-

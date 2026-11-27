@@ -41,7 +41,7 @@ import jakarta.persistence.Table;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntity;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceValidator;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.util.URIBuilder;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractDataResource;
 import net.ivoa.calycopis.openapi.spring.model.IvoaSimpleDataResource;
@@ -80,7 +80,7 @@ implements SimpleDataResource
      */
     protected SimpleDataResourceEntity(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceEntity storage,
+        final AbstractStorageReservationEntity storage,
         final AbstractDataResourceValidator.Result result
         ){
         this(
@@ -99,7 +99,7 @@ implements SimpleDataResource
      */
     protected SimpleDataResourceEntity(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceEntity storage,
+        final AbstractStorageReservationEntity storage,
         final AbstractDataResourceValidator.Result result,
         final IvoaSimpleDataResource validated
         ){

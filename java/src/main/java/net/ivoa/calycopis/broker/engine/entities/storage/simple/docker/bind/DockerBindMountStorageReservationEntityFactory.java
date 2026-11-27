@@ -21,14 +21,27 @@
  *
  */
 
-package net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.volume;
+package net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.bind;
 
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResource;
+import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservationEntityFactory;
 
 /**
  * 
  */
-public interface DockerVolumeMountStorage
-extends SimpleStorageResource, DockerVolumeMount
+public interface DockerBindMountStorageReservationEntityFactory
+extends SimpleStorageReservationEntityFactory
     {
+
+    /**
+     * Create a DockerBindMountStorageReservationEntity using the specified path.
+     * 
+     */
+    public DockerBindMountStorageReservationEntity create(
+        final SimpleExecutionSessionEntity session,
+        final AbstractStorageReservationValidator.Result result,
+        final String path
+        );
+
     }

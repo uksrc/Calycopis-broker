@@ -49,7 +49,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import net.ivoa.calycopis.broker.engine.entities.compute.AbstractComputeReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.simple.SimpleVolumeMountEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.simple.SimpleVolumeMountValidator;
 
@@ -91,12 +91,12 @@ implements MockSimpleVolumeMount
         }
 
     /**
-     * Protected constructor for a StorageResource.
+     * Protected constructor for a StorageReservation.
      *
      */
     public MockSimpleVolumeMountEntity(
         final AbstractComputeReservationEntity computeResource,
-        final AbstractStorageResourceEntity storageResource,
+        final AbstractStorageReservationEntity storageResource,
         final SimpleVolumeMountValidator.Result result
         ){
         super(

@@ -50,7 +50,7 @@ import java.net.URI;
 import net.ivoa.calycopis.broker.engine.entities.component.Component;
 import net.ivoa.calycopis.broker.engine.entities.compute.AbstractComputeReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResource;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResource;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservation;
 
 /**
  *
@@ -79,10 +79,10 @@ extends Component
     public AbstractDataResource getDataResource();
     
     /**
-     * Reference to the StorageResource mounted in this volume.
+     * Reference to the StorageReservation mounted in this volume.
      * TODO Combine these behind a common interface.
      *
      */
-    public AbstractStorageResource getStorageResource();
+    public AbstractStorageReservation getStorageReservation();
     
     }

@@ -56,8 +56,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.component.LifecycleComponent;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
 import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageLinker;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.DockerStorageLinker;
 import net.ivoa.calycopis.broker.engine.functional.platform.Platform;
 import net.ivoa.calycopis.broker.engine.functional.platform.docker.DockerClientFactory;
@@ -72,20 +72,20 @@ import net.ivoa.calycopis.openapi.spring.model.IvoaLifecyclePhase;
 @Slf4j
 @Entity
 @Table(
-    name = "dockervolumemountstorage"
+    name = "dockervolumemountstoragereservations"
     )
 @DiscriminatorValue(
     value="uri:docker-volume-storage"
     )
-public class DockerVolumeMountStorageEntity
-extends SimpleStorageResourceEntity
-implements DockerVolumeMountStorage
+public class DockerVolumeMountStorageReservationEntity
+extends SimpleStorageReservationEntity
+implements DockerVolumeMountStorageReservation
     {
 
     /**
      * 
      */
-    public DockerVolumeMountStorageEntity()
+    public DockerVolumeMountStorageReservationEntity()
         {
         super();
         }
@@ -93,9 +93,9 @@ implements DockerVolumeMountStorage
     /**
      * 
      */
-    public DockerVolumeMountStorageEntity(
+    public DockerVolumeMountStorageReservationEntity(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceValidator.Result result
+        final AbstractStorageReservationValidator.Result result
         ){
         super(
             session,
@@ -247,9 +247,9 @@ implements DockerVolumeMountStorage
                         "Failed to create Docker volume, see logs for details"
                         );
                     }
-                else if (component instanceof DockerVolumeMountStorageEntity)
+                else if (component instanceof DockerVolumeMountStorageReservationEntity)
                     {
-                    ((DockerVolumeMountStorageEntity) component).volumeIdent = this.createdVolumeName;
+                    ((DockerVolumeMountStorageReservationEntity) component).volumeIdent = this.createdVolumeName;
                     log.debug(
                         "Saved volume ident [{}] for storage volume [{}]",
                         this.createdVolumeName,

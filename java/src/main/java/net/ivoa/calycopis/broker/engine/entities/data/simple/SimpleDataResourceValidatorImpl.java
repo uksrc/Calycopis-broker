@@ -71,7 +71,7 @@ import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceValida
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataStorageLinker;
 import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 import net.ivoa.calycopis.broker.engine.functional.validator.Validator;
 import net.ivoa.calycopis.broker.engine.functional.validator.ValidatorTools;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractDataResource;
@@ -163,7 +163,7 @@ implements SimpleDataResourceValidator
         // failed validation used to build a storage resource for a location
         // the platform had already rejected, including the empty bind mount
         // that file://None produced.
-        final AbstractStorageResourceValidator.Result storage;
+        final AbstractStorageReservationValidator.Result storage;
         if (success)
             {
             storage = linkStorage(

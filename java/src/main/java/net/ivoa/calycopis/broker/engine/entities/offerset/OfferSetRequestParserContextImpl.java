@@ -90,7 +90,7 @@ import net.ivoa.calycopis.broker.engine.entities.executable.AbstractExecutableVa
 import net.ivoa.calycopis.broker.engine.entities.identity.IdentityEntity;
 import net.ivoa.calycopis.broker.engine.entities.message.Message;
 import net.ivoa.calycopis.broker.engine.entities.message.MessageEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountValidator;
 import net.ivoa.calycopis.broker.engine.functional.validator.Validator;
 import net.ivoa.calycopis.broker.engine.functional.validator.ValidatorTools;
@@ -199,8 +199,8 @@ implements OfferSetRequestParserContext
                     );
                 //
                 // Create a preliminary result for cross-reference lookups.
-                AbstractStorageResourceValidator.ResultBean preliminary =
-                    new AbstractStorageResourceValidator.ResultBean(
+                AbstractStorageReservationValidator.ResultBean preliminary =
+                    new AbstractStorageReservationValidator.ResultBean(
                         Validator.ResultEnum.ACCEPTED,
                         resource
                         ){
@@ -507,10 +507,10 @@ implements OfferSetRequestParserContext
      * Our List of StorageValidator results.
      *
      */
-    private List<AbstractStorageResourceValidator.Result> storageValidatorResultList = new ArrayList<AbstractStorageResourceValidator.Result>();
+    private List<AbstractStorageReservationValidator.Result> storageValidatorResultList = new ArrayList<AbstractStorageReservationValidator.Result>();
 
     @Override
-    public List<AbstractStorageResourceValidator.Result> getStorageValidatorResults()
+    public List<AbstractStorageReservationValidator.Result> getStorageValidatorResults()
         {
         return storageValidatorResultList;
         }
@@ -519,10 +519,10 @@ implements OfferSetRequestParserContext
      * Our Map of StorageValidator results.
      *
      */
-    private Map<String, AbstractStorageResourceValidator.Result> storageValidatorResultMap = new HashMap<String, AbstractStorageResourceValidator.Result>();
+    private Map<String, AbstractStorageReservationValidator.Result> storageValidatorResultMap = new HashMap<String, AbstractStorageReservationValidator.Result>();
 
     @Override
-    public String makeStorageValidatorResultKey(final AbstractStorageResourceValidator.Result result)
+    public String makeStorageValidatorResultKey(final AbstractStorageReservationValidator.Result result)
         {
         log.debug("makeStorageValidatorResultKey(StorageResourceValidator.Result)");
         log.debug("Result [{}]", result);
@@ -557,7 +557,7 @@ implements OfferSetRequestParserContext
         }
 
     @Override
-    public void addStorageValidatorResult(final AbstractStorageResourceValidator.Result result)
+    public void addStorageValidatorResult(final AbstractStorageReservationValidator.Result result)
         {
         log.debug("addStorageValidatorResult(String)");
         log.debug("Result [{}]", result);
@@ -588,7 +588,7 @@ implements OfferSetRequestParserContext
         }
 
     @Override
-    public AbstractStorageResourceValidator.Result findStorageValidatorResult(final AbstractStorageResourceValidator.Result result)
+    public AbstractStorageReservationValidator.Result findStorageValidatorResult(final AbstractStorageReservationValidator.Result result)
         {
         log.debug("findStorageValidatorResult(StorageResourceValidator.Result)");
         log.debug("Result [{}]", result);
@@ -600,7 +600,7 @@ implements OfferSetRequestParserContext
         }
 
     @Override
-    public AbstractStorageResourceValidator.Result findStorageValidatorResult(final IvoaAbstractStorageResource resource)
+    public AbstractStorageReservationValidator.Result findStorageValidatorResult(final IvoaAbstractStorageResource resource)
         {
         log.debug("findStorageValidatorResult(IvoaAbstractStorageResource)");
         log.debug("Resource [{}]", resource);
@@ -612,7 +612,7 @@ implements OfferSetRequestParserContext
         }
 
     @Override
-    public AbstractStorageResourceValidator.Result findStorageValidatorResult(final String key)
+    public AbstractStorageReservationValidator.Result findStorageValidatorResult(final String key)
         {
         log.debug("findStorageValidatorResult(String)");
         log.debug("Key [{}]", key);
@@ -723,12 +723,12 @@ implements OfferSetRequestParserContext
     /*
      * A Map linking DataValidator results to StorageValidator results.
      *
-    private Map<String, AbstractStorageResourceValidator.Result> dataStorageMap = new HashMap<String, AbstractStorageResourceValidator.Result>();
+    private Map<String, AbstractStorageReservationValidator.Result> dataStorageMap = new HashMap<String, AbstractStorageReservationValidator.Result>();
 
     @Override
     public void addDataStorageResult(
         final IvoaAbstractDataResource dataResource,
-        final AbstractStorageResourceValidator.Result storageResult
+        final AbstractStorageReservationValidator.Result storageResult
         ){
         log.debug("addDataStorageResult(IvoaAbstractDataResource, StorageResourceValidator.Result)");
         log.debug("IvoaAbstractDataResource [{}]", dataResource);
@@ -746,7 +746,7 @@ implements OfferSetRequestParserContext
     @Override
     public void addDataStorageResult(
         final AbstractDataResourceValidator.Result dataResult,
-        final AbstractStorageResourceValidator.Result storageResult
+        final AbstractStorageReservationValidator.Result storageResult
         ){
         log.debug("addDataStorageResult(DataResourceValidator.Result, StorageResourceValidator.Result)");
         log.debug("DataResult [{}]", dataResult);
@@ -762,7 +762,7 @@ implements OfferSetRequestParserContext
         }
 
     @Override
-    public AbstractStorageResourceValidator.Result findDataStorageResult(final AbstractDataResourceValidator.Result dataResult)
+    public AbstractStorageReservationValidator.Result findDataStorageResult(final AbstractDataResourceValidator.Result dataResult)
         {
         log.debug("findDataStorageResult(DataResourceValidator.Result)");
         log.debug("Result [{}]", dataResult);
@@ -774,7 +774,7 @@ implements OfferSetRequestParserContext
         }
 
     @Override
-    public AbstractStorageResourceValidator.Result findDataStorageResult(final IvoaAbstractDataResource dataResouce)
+    public AbstractStorageReservationValidator.Result findDataStorageResult(final IvoaAbstractDataResource dataResouce)
         {
         log.debug("findDataStorageResult(IvoaAbstractDataResource)");
         log.debug("Resouce [{}]", dataResouce);
@@ -911,7 +911,7 @@ implements OfferSetRequestParserContext
                     log.debug("Data prepare time [{}][{}]", dataResult.getName(), dataPrepareTime);
                     //
                     // Check for a storage resource linked to the data resource.
-                    AbstractStorageResourceValidator.Result storageResult = dataResult.getStorageResult();
+                    AbstractStorageReservationValidator.Result storageResult = dataResult.getStorageResult();
                     if (storageResult != null)
                         {
                         //
@@ -929,7 +929,7 @@ implements OfferSetRequestParserContext
                 else {
                     //
                     // Look for a linked storage resource.
-                    AbstractStorageResourceValidator.Result storageResult = volumeResult.getStorageResult();
+                    AbstractStorageReservationValidator.Result storageResult = volumeResult.getStorageResult();
                     if (storageResult != null)
                         {
                         //

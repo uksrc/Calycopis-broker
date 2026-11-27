@@ -250,12 +250,12 @@ import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionS
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntityFactoryImpl;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntityUpdateHandlerImpl;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntityUpdater;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidatorFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidatorFactoryImpl;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.mock.MockSimpleStorageResourceEntityFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.mock.MockSimpleStorageResourceEntityFactoryImpl;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.mock.MockSimpleStorageResourceValidatorImpl;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidatorFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidatorFactoryImpl;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.mock.MockSimpleStorageReservationEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.mock.MockSimpleStorageReservationEntityFactoryImpl;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.mock.MockSimpleStorageReservationValidatorImpl;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountValidatorFactory;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountValidatorFactoryImpl;
@@ -287,7 +287,7 @@ import net.ivoa.calycopis.broker.spring.jpa.SpringProcessingRequestEntityReposit
 import net.ivoa.calycopis.broker.spring.jpa.SpringSessionEntityRepository;
 import net.ivoa.calycopis.broker.spring.jpa.SpringSessionEntityRepositoryWrapper;
 import net.ivoa.calycopis.broker.spring.jpa.SpringSessionProcessingRequestEntityRepository;
-import net.ivoa.calycopis.broker.spring.jpa.SpringStorageResourceEntityRepository;
+import net.ivoa.calycopis.broker.spring.jpa.SpringStorageReservationEntityRepository;
 import net.ivoa.calycopis.broker.spring.jpa.SpringVolumeMountEntityRepository;
 
 /**
@@ -374,7 +374,7 @@ implements MockPlatform
         
 
         this.mockDataStorageLinker = new MockDataStorageLinkerImpl(
-            this.abstractStorageResourceValidatorFactory
+            this.abstractStorageReservationValidatorFactory
             );
 
 // Executable        
@@ -391,9 +391,9 @@ implements MockPlatform
             );
 
 // Storage        
-        this.mockStorageResourceEntityFactory = new MockSimpleStorageResourceEntityFactoryImpl(
-            new SpringAbstractEntityRepositoryWrapper<AbstractStorageResourceEntity>(
-                this.springAbstractStorageResourceEntityRepository
+        this.mockStorageReservationEntityFactory = new MockSimpleStorageReservationEntityFactoryImpl(
+            new SpringAbstractEntityRepositoryWrapper<AbstractStorageReservationEntity>(
+                this.springAbstractStorageReservationEntityRepository
                 )
             ); 
 
@@ -471,9 +471,9 @@ implements MockPlatform
                 this.abstractVolumeMountValidatorFactory
                 )
             );
-        this.abstractStorageResourceValidatorFactory.addValidator(
-            new MockSimpleStorageResourceValidatorImpl(
-                this.mockStorageResourceEntityFactory
+        this.abstractStorageReservationValidatorFactory.addValidator(
+            new MockSimpleStorageReservationValidatorImpl(
+                this.mockStorageReservationEntityFactory
                 )
             );
 
@@ -506,7 +506,7 @@ implements MockPlatform
             new MockSimpleVolumeMountValidatorImpl(
                 this.mockVolumeMountEntityFactory,
                 this.mockSimpleDataResourceEntityFactory,
-                this.mockStorageResourceEntityFactory
+                this.mockStorageReservationEntityFactory
                 )
             );
 
@@ -514,7 +514,7 @@ implements MockPlatform
         this.registerFactory(this.mockJupyterNotebookEntityFactory);
         this.registerFactory(this.mockSimpleComputeReservationEntityFactory);
         //this.registerFactory(this.dataResourceEntityFactory);
-        this.registerFactory(this.mockStorageResourceEntityFactory);
+        this.registerFactory(this.mockStorageReservationEntityFactory);
         
         }
 
@@ -572,14 +572,14 @@ implements MockPlatform
 // Storage
 
     @Autowired
-    private SpringStorageResourceEntityRepository springAbstractStorageResourceEntityRepository;
-    private MockSimpleStorageResourceEntityFactory mockStorageResourceEntityFactory; 
+    private SpringStorageReservationEntityRepository springAbstractStorageReservationEntityRepository;
+    private MockSimpleStorageReservationEntityFactory mockStorageReservationEntityFactory;
     
-    private AbstractStorageResourceValidatorFactory abstractStorageResourceValidatorFactory = new AbstractStorageResourceValidatorFactoryImpl();
+    private AbstractStorageReservationValidatorFactory abstractStorageReservationValidatorFactory = new AbstractStorageReservationValidatorFactoryImpl();
     @Override
-    public AbstractStorageResourceValidatorFactory getStorageResourceValidators()
+    public AbstractStorageReservationValidatorFactory getStorageResourceValidators()
         {
-        return this.abstractStorageResourceValidatorFactory;
+        return this.abstractStorageReservationValidatorFactory;
         }
 
     private MockDataStorageLinker mockDataStorageLinker;

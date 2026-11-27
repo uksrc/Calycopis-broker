@@ -1,7 +1,7 @@
 /*
  * <meta:header>
  *   <meta:licence>
- *     Copyright (C) 2025 University of Manchester.
+ *     Copyright (C) 2026 University of Manchester.
  *
  *     This information is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,16 +21,15 @@
  *
  */
 
-package net.ivoa.calycopis.broker.engine.entities.storage;
+package net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.bind;
 
-import net.ivoa.calycopis.broker.engine.functional.validator.AbstractValidatorImpl;
-import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractStorageResource;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservation;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.volume.DockerVolumeMount;
 
 /**
  * 
  */
-public abstract class AbstractStorageResourceValidatorImpl
-extends AbstractValidatorImpl<IvoaAbstractStorageResource, AbstractStorageResourceEntity>
-implements AbstractStorageResourceValidator
+public interface DockerBindMountStorageReservation
+extends SimpleStorageReservation, DockerVolumeMount
     {
     }

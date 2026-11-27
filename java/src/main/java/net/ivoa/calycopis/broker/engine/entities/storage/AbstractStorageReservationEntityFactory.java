@@ -1,7 +1,7 @@
 /*
  * <meta:header>
  *   <meta:licence>
- *     Copyright (C) 2025 University of Manchester.
+ *     Copyright (C) 2026 University of Manchester.
  *
  *     This information is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -18,28 +18,28 @@
  *   </meta:licence>
  * </meta:header>
  *
- * AIMetrics: [
- *     {
- *     "name": "Cursor CLI",
- *     "version": "2026.02.13-41ac335",
- *     "model": "Claude 4.6 Opus (Thinking)",
- *     "contribution": {
- *       "value": 100,
- *       "units": "%"
- *       }
- *     }
- *   ]
  *
  */
 
-package net.ivoa.calycopis.broker.engine.entities.storage.simple.mock;
+package net.ivoa.calycopis.broker.engine.entities.storage;
 
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.component.LifecycleComponentEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
 
 /**
- * 
+ *
  */
-public interface MockSimpleStorageResourceValidator
-extends SimpleStorageResourceValidator
+public interface AbstractStorageReservationEntityFactory
+extends LifecycleComponentEntityFactory<AbstractStorageReservationEntity>
     {
+
+    /**
+     * Create a new StorageResourceEntity based on a Validator Result.
+     *
+     */
+    public AbstractStorageReservationEntity create(
+        final SimpleExecutionSessionEntity session,
+        final AbstractStorageReservationValidator.Result result
+        );
+
     }

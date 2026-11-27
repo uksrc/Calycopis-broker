@@ -85,7 +85,7 @@ import net.ivoa.calycopis.broker.engine.entities.executable.AbstractExecutableVa
 import net.ivoa.calycopis.broker.engine.entities.identity.IdentityEntity;
 import net.ivoa.calycopis.broker.engine.entities.message.Message;
 import net.ivoa.calycopis.broker.engine.entities.message.MessageSubject;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountValidator;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractComputeResource;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractCostItem;
@@ -255,14 +255,14 @@ extends MessageSubject
      * List the StorageValidatorResults.
      *
      */
-    public List<AbstractStorageResourceValidator.Result> getStorageValidatorResults();
+    public List<AbstractStorageReservationValidator.Result> getStorageValidatorResults();
 
     /**
      * Generate a StorageValidatorResult key.
      *
      */
     @Deprecated
-    public String makeStorageValidatorResultKey(final AbstractStorageResourceValidator.Result result);
+    public String makeStorageValidatorResultKey(final AbstractStorageReservationValidator.Result result);
 
     /**
      * Generate a StorageResource key.
@@ -274,26 +274,26 @@ extends MessageSubject
      * Add a StorageValidatorResult.
      *
      */
-    public void addStorageValidatorResult(final AbstractStorageResourceValidator.Result result);
+    public void addStorageValidatorResult(final AbstractStorageReservationValidator.Result result);
 
     /**
      * Find a StorageValidatorResult.
      *
      */
     @Deprecated
-    public AbstractStorageResourceValidator.Result findStorageValidatorResult(final AbstractStorageResourceValidator.Result result);
+    public AbstractStorageReservationValidator.Result findStorageValidatorResult(final AbstractStorageReservationValidator.Result result);
 
     /**
      * Find a StorageValidatorResult.
      *
      */
-    public AbstractStorageResourceValidator.Result findStorageValidatorResult(final IvoaAbstractStorageResource resource);
+    public AbstractStorageReservationValidator.Result findStorageValidatorResult(final IvoaAbstractStorageResource resource);
 
     /**
      * Find a StorageValidatorResult.
      *
      */
-    public AbstractStorageResourceValidator.Result findStorageValidatorResult(final String key);
+    public AbstractStorageReservationValidator.Result findStorageValidatorResult(final String key);
 
     /**
      * List the VolumeValidatorResults.

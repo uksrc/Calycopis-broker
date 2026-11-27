@@ -61,7 +61,7 @@ import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceValida
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataStorageLinker;
 import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 import net.ivoa.calycopis.broker.engine.functional.validator.Validator;
 import net.ivoa.calycopis.broker.engine.functional.validator.ValidatorTools;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractDataResource;
@@ -143,7 +143,7 @@ implements AmazonS3DataResourceValidator
             context
             );
 
-        AbstractStorageResourceValidator.Result storage = linkStorage(
+        AbstractStorageReservationValidator.Result storage = linkStorage(
             requested,
             validated,
             context
@@ -198,7 +198,7 @@ implements AmazonS3DataResourceValidator
                 dataResult
                 );
             //
-            // Add our Result to the StorageResource.
+            // Add our Result to the StorageReservation.
             storage.addDataResourceResult(
                 dataResult
                 );

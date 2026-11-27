@@ -39,36 +39,36 @@ import java.net.URI;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 import net.ivoa.calycopis.broker.engine.util.URIBuilder;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractStorageResource;
 import net.ivoa.calycopis.openapi.spring.model.IvoaSimpleStorageResource;
 
 /**
- * A SimpleStorageResource Entity.
+ * A SimpleStorageReservation Entity.
  *
  */
 @Entity
 @Table(
-    name = "simplestorageresources"
+    name = "simplestoragereservations"
     )
-public abstract class SimpleStorageResourceEntity
-extends AbstractStorageResourceEntity
-implements SimpleStorageResource
+public abstract class SimpleStorageReservationEntity
+extends AbstractStorageReservationEntity
+implements SimpleStorageReservation
     {
     
     @Override
     public URI getKind()
         {
-        return SimpleStorageResource.KIND_DISCRIMINATOR;
+        return SimpleStorageReservation.KIND_DISCRIMINATOR;
         }
 
     /**
      * Protected constructor for JPA entities.
      *
      */
-    protected SimpleStorageResourceEntity()
+    protected SimpleStorageReservationEntity()
         {
         super();
         }
@@ -77,9 +77,9 @@ implements SimpleStorageResource
      * Protected constructor used by our Factories.
      *
      */
-    protected SimpleStorageResourceEntity(
+    protected SimpleStorageReservationEntity(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceValidator.Result result
+        final AbstractStorageReservationValidator.Result result
         ){
         super(
             session,

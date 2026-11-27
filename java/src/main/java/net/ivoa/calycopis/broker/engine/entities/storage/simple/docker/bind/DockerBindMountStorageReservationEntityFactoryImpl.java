@@ -25,25 +25,25 @@ package net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.bind;
 
 import net.ivoa.calycopis.broker.engine.entities.component.AbstractEntityRepository;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator.Result;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.DockerSimpleStorageResourceEntityFactoryImpl;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator.Result;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.DockerSimpleStorageReservationEntityFactoryImpl;
 
 /**
  * 
  */
-public class DockerBindMountStorageEntityFactoryImpl
-extends DockerSimpleStorageResourceEntityFactoryImpl
-implements DockerBindMountStorageEntityFactory
+public class DockerBindMountStorageReservationEntityFactoryImpl
+extends DockerSimpleStorageReservationEntityFactoryImpl
+implements DockerBindMountStorageReservationEntityFactory
     {
 
     /**
      * Public constructor used by our Platform.
      * 
      */
-    public DockerBindMountStorageEntityFactoryImpl(
-        final AbstractEntityRepository<AbstractStorageResourceEntity> repository
+    public DockerBindMountStorageReservationEntityFactoryImpl(
+        final AbstractEntityRepository<AbstractStorageReservationEntity> repository
         ){
         super(
             repository
@@ -51,13 +51,13 @@ implements DockerBindMountStorageEntityFactory
         }
 
     @Override
-    public DockerBindMountStorageEntity create(
+    public DockerBindMountStorageReservationEntity create(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceValidator.Result result,
+        final AbstractStorageReservationValidator.Result result,
         final String path
         ){
-        DockerBindMountStorageEntity entity = this.repository.save(
-            new DockerBindMountStorageEntity(
+        DockerBindMountStorageReservationEntity entity = this.repository.save(
+            new DockerBindMountStorageReservationEntity(
                 session,
                 result,
                 path
@@ -67,12 +67,12 @@ implements DockerBindMountStorageEntityFactory
         }
 
     @Override
-    public AbstractStorageResourceEntity create(
+    public AbstractStorageReservationEntity create(
         final SimpleExecutionSessionEntity session,
         final Result result
         ){
         throw new UnsupportedOperationException(
-            "Creating DockerBindMountStorageEntity with no path is not supported"
+            "Creating DockerBindMountStorageReservationEntity with no path is not supported"
             );
         }
     }

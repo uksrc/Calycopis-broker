@@ -1,7 +1,7 @@
 /*
  * <meta:header>
  *   <meta:licence>
- *     Copyright (C) 2025 University of Manchester.
+ *     Copyright (C) 2024 University of Manchester.
  *
  *     This information is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
  *     "version": "2026.02.13-41ac335",
  *     "model": "Claude 4.6 Opus (Thinking)",
  *     "contribution": {
- *       "value": 5,
+ *       "value": 50,
  *       "units": "%"
  *       }
  *     }
@@ -32,27 +32,38 @@
  *
  */
 
-package net.ivoa.calycopis.broker.engine.entities.storage;
+package net.ivoa.calycopis.broker.engine.entities.storage.simple;
 
-import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
-import net.ivoa.calycopis.broker.engine.functional.validator.ValidatorFactory;
-import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractStorageResource;
+import java.net.URI;
+
+import lombok.extern.slf4j.Slf4j;
+import net.ivoa.calycopis.broker.engine.entities.component.AbstractEntityRepository;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntityFactoryImpl;
 
 /**
- * Public interface for a StorageResource ValidatorFactory.
- * 
+ *
  */
-public interface AbstractStorageResourceValidatorFactory
-extends AbstractStorageResourceValidator, ValidatorFactory<IvoaAbstractStorageResource, AbstractStorageResourceEntity>
+@Slf4j
+public abstract class SimpleStorageReservationEntityFactoryImpl
+extends AbstractStorageReservationEntityFactoryImpl
+implements SimpleStorageReservationEntityFactory
     {
-
     /**
-     * Validate a storage resource, needed to resolve the inherited generics.
+     * Protected constructor.
      * 
      */
-    public AbstractStorageResourceValidator.Result validateObject(
-        final IvoaAbstractStorageResource object,
-        final OfferSetRequestParserContext context
-        ); 
-    
+    protected SimpleStorageReservationEntityFactoryImpl(
+        final AbstractEntityRepository<AbstractStorageReservationEntity> repository
+        ){
+        super(
+            repository
+            );
+        }
+
+    @Override
+    public URI getKind()
+        {
+        return SimpleStorageReservation.KIND_DISCRIMINATOR;
+        }
     }

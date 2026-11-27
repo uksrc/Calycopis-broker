@@ -26,41 +26,41 @@ package net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.volume;
 import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.component.AbstractEntityRepository;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.DockerSimpleStorageResourceEntityFactoryImpl;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.DockerSimpleStorageReservationEntityFactoryImpl;
 
 /**
  * 
  */
 @Slf4j
-public class DockerVolumeMountStorageEntityFactoryImpl
-extends DockerSimpleStorageResourceEntityFactoryImpl
-implements DockerVolumeMountStorageEntityFactory
+public class DockerVolumeMountStorageReservationEntityFactoryImpl
+extends DockerSimpleStorageReservationEntityFactoryImpl
+implements DockerVolumeMountStorageReservationEntityFactory
     {
 
     /**
      * Public constructor used by our Platform.
      *
      */
-    public DockerVolumeMountStorageEntityFactoryImpl(
-        final AbstractEntityRepository<AbstractStorageResourceEntity> repository
+    public DockerVolumeMountStorageReservationEntityFactoryImpl(
+        final AbstractEntityRepository<AbstractStorageReservationEntity> repository
         ){
         super(
             repository
             );
         }
 
-    public DockerVolumeMountStorageEntity create(
+    public DockerVolumeMountStorageReservationEntity create(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceValidator.Result result
+        final AbstractStorageReservationValidator.Result result
         ){
         log.debug(
-            "Creating DockerVolumeMountStorageEntity for [{}]",
+            "Creating DockerVolumeMountStorageReservationEntity for [{}]",
             result.getObject()
             );
-        DockerVolumeMountStorageEntity entity = this.repository.save(
-            new DockerVolumeMountStorageEntity(
+        DockerVolumeMountStorageReservationEntity entity = this.repository.save(
+            new DockerVolumeMountStorageReservationEntity(
                 session,
                 result
                 )

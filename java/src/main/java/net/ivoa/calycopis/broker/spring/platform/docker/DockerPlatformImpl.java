@@ -241,14 +241,14 @@ import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionS
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntityFactoryImpl;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntityUpdateHandlerImpl;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntityUpdater;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntityFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidatorFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidatorFactoryImpl;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.bind.DockerBindMountStorageEntityFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.bind.DockerBindMountStorageEntityFactoryImpl;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.volume.DockerVolumeMountStorageEntityFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.volume.DockerVolumeMountStorageEntityFactoryImpl;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidatorFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidatorFactoryImpl;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.bind.DockerBindMountStorageReservationEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.bind.DockerBindMountStorageReservationEntityFactoryImpl;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.volume.DockerVolumeMountStorageReservationEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.volume.DockerVolumeMountStorageReservationEntityFactoryImpl;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountValidatorFactory;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountValidatorFactoryImpl;
@@ -286,7 +286,7 @@ import net.ivoa.calycopis.broker.spring.jpa.SpringProcessingRequestEntityReposit
 import net.ivoa.calycopis.broker.spring.jpa.SpringSessionEntityRepository;
 import net.ivoa.calycopis.broker.spring.jpa.SpringSessionEntityRepositoryWrapper;
 import net.ivoa.calycopis.broker.spring.jpa.SpringSessionProcessingRequestEntityRepository;
-import net.ivoa.calycopis.broker.spring.jpa.SpringStorageResourceEntityRepository;
+import net.ivoa.calycopis.broker.spring.jpa.SpringStorageReservationEntityRepository;
 import net.ivoa.calycopis.broker.spring.jpa.SpringVolumeMountEntityRepository;
 
 /**
@@ -358,15 +358,15 @@ implements DockerPlatform
             );
 
 // Storage
-        this.dockerBindMountStorageResourceEntityFactory = new DockerBindMountStorageEntityFactoryImpl(
-            new SpringAbstractEntityRepositoryWrapper<AbstractStorageResourceEntity>(
-                this.springStorageResourceEntityRepository
+        this.dockerBindMountStorageReservationEntityFactory = new DockerBindMountStorageReservationEntityFactoryImpl(
+            new SpringAbstractEntityRepositoryWrapper<AbstractStorageReservationEntity>(
+                this.springStorageReservationEntityRepository
                 )
             );
 
-        this.dockerVolumeMountStorageResourceEntityFactory = new DockerVolumeMountStorageEntityFactoryImpl(
-            new SpringAbstractEntityRepositoryWrapper<AbstractStorageResourceEntity>(
-                this.springStorageResourceEntityRepository
+        this.dockerVolumeMountStorageReservationEntityFactory = new DockerVolumeMountStorageReservationEntityFactoryImpl(
+            new SpringAbstractEntityRepositoryWrapper<AbstractStorageReservationEntity>(
+                this.springStorageReservationEntityRepository
                 )
             );
 
@@ -378,8 +378,8 @@ implements DockerPlatform
             );
 
         this.dataStorageLinker = new DockerDataStorageLinkerImpl(
-            this.dockerBindMountStorageResourceEntityFactory,
-            this.dockerVolumeMountStorageResourceEntityFactory
+            this.dockerBindMountStorageReservationEntityFactory,
+            this.dockerVolumeMountStorageReservationEntityFactory
             );
 
 // Session
@@ -483,7 +483,7 @@ implements DockerPlatform
             new DockerSimpleVolumeMountValidatorImpl(
                 this.dockerVolumeMountEntityFactory,
                 (AbstractDataResourceEntityFactory) this.dockerSimpleDataHttpResourceEntityFactory,
-                (AbstractStorageResourceEntityFactory) this.dockerVolumeMountStorageResourceEntityFactory
+                (AbstractStorageReservationEntityFactory) this.dockerVolumeMountStorageReservationEntityFactory
                 )
             );
 
@@ -497,8 +497,8 @@ implements DockerPlatform
         this.registerFactory(this.dockerSimpleDataHttpResourceEntityFactory);
 
         // We probably only need to register one of these, because it searches the abstract base class repository.
-        this.registerFactory(this.dockerBindMountStorageResourceEntityFactory);
-        this.registerFactory(this.dockerVolumeMountStorageResourceEntityFactory);
+        this.registerFactory(this.dockerBindMountStorageReservationEntityFactory);
+        this.registerFactory(this.dockerVolumeMountStorageReservationEntityFactory);
 
         }
 
@@ -605,16 +605,16 @@ implements DockerPlatform
 // Storage
 
     @Autowired
-    private SpringStorageResourceEntityRepository springStorageResourceEntityRepository;
+    private SpringStorageReservationEntityRepository springStorageReservationEntityRepository;
 
-    private DockerBindMountStorageEntityFactory   dockerBindMountStorageResourceEntityFactory;
-    private DockerVolumeMountStorageEntityFactory dockerVolumeMountStorageResourceEntityFactory;
+    private DockerBindMountStorageReservationEntityFactory   dockerBindMountStorageReservationEntityFactory;
+    private DockerVolumeMountStorageReservationEntityFactory dockerVolumeMountStorageReservationEntityFactory;
 
-    private AbstractStorageResourceValidatorFactory abstractStorageResourceValidatorFactory = new AbstractStorageResourceValidatorFactoryImpl() ;
+    private AbstractStorageReservationValidatorFactory abstractStorageReservationValidatorFactory = new AbstractStorageReservationValidatorFactoryImpl() ;
     @Override
-    public AbstractStorageResourceValidatorFactory getStorageResourceValidators()
+    public AbstractStorageReservationValidatorFactory getStorageResourceValidators()
         {
-        return this.abstractStorageResourceValidatorFactory;
+        return this.abstractStorageReservationValidatorFactory;
         }
 
     private DockerDataStorageLinker dataStorageLinker;
