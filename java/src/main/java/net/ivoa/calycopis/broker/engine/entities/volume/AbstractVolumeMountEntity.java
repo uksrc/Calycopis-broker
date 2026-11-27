@@ -67,7 +67,7 @@ import jakarta.persistence.Table;
 import net.ivoa.calycopis.broker.engine.entities.component.ComponentEntity;
 import net.ivoa.calycopis.broker.engine.entities.compute.AbstractComputeReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.util.URIBuilder;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractVolumeMount;
 import net.ivoa.calycopis.openapi.spring.model.IvoaComponentMetadata;
@@ -122,7 +122,7 @@ implements AbstractVolumeMount
      */
     protected AbstractVolumeMountEntity(
         final AbstractComputeReservationEntity computeResource,
-        final AbstractStorageResourceEntity storageResource,
+        final AbstractStorageReservationEntity storageResource,
         final IvoaComponentMetadata meta
         ){
         super(meta, computeResource.getOwner());
@@ -166,14 +166,14 @@ implements AbstractVolumeMount
 
     @JoinColumn(name = "storageresource", referencedColumnName = "uuid", nullable = true)
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    private AbstractStorageResourceEntity storageResource;
+    private AbstractStorageReservationEntity storageResource;
 
     @Override
-    public AbstractStorageResourceEntity getStorageResource()
+    public AbstractStorageReservationEntity getStorageReservation()
         {
         return this.storageResource;
         }
-    public void setStorageResource(final AbstractStorageResourceEntity storageResource)
+    public void setStorageReservation(final AbstractStorageReservationEntity storageResource)
         {
         this.storageResource = storageResource;
         }

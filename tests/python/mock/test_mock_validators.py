@@ -84,7 +84,7 @@ Mock validators tested:
   - MockDockerContainerValidatorImpl   (excluded port path/number)
   - MockJupyterNotebookValidatorImpl   (excluded location)
   - MockSimpleComputeResourceValidatorImpl (cores/memory limits)
-  - MockSimpleStorageResourceValidatorImpl (size limit)
+  - MockSimpleStorageReservationValidatorImpl (size limit)
   - MockSimpleDataResourceValidatorImpl    (excluded location)
   - MockAmazonS3DataResourceValidatorImpl  (excluded endpoint)
   - MockIvoaDataResourceValidatorImpl      (excluded ivoid)
@@ -581,7 +581,7 @@ class TestSimpleComputeResourceValidation:
 
 class TestSimpleStorageResourceValidation:
     """
-    Tests for MockSimpleStorageResourceValidatorImpl.
+    Tests for MockSimpleStorageReservationValidatorImpl.
 
     Mock rules:
       - MAX_SIZE_LIMIT = 1000 (min size > 1000 fails)

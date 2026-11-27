@@ -71,8 +71,8 @@ import net.ivoa.calycopis.broker.engine.entities.compute.AbstractComputeReservat
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntityFactory;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceValidator;
 import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntityFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountValidatorImpl;
 import net.ivoa.calycopis.broker.engine.functional.validator.Validator;
@@ -92,7 +92,7 @@ implements SimpleVolumeMountValidator
 
     final SimpleVolumeMountEntityFactory volumeMountFactory;
     final AbstractDataResourceEntityFactory dataResourceFactory;
-    final AbstractStorageResourceEntityFactory storageResourceFactory;
+    final AbstractStorageReservationEntityFactory storageReservationFactory;
 
     /**
      * Public constructor.
@@ -101,12 +101,12 @@ implements SimpleVolumeMountValidator
     public SimpleVolumeMountValidatorImpl(
         final SimpleVolumeMountEntityFactory volumeMountFactory,
         final AbstractDataResourceEntityFactory dataResourceFactory,
-        final AbstractStorageResourceEntityFactory storageResourceFactory
+        final AbstractStorageReservationEntityFactory storageReservationFactory
         ){
         super();
         this.volumeMountFactory = volumeMountFactory ;
         this.dataResourceFactory = dataResourceFactory ;
-        this.storageResourceFactory = storageResourceFactory ;
+        this.storageReservationFactory = storageReservationFactory ;
         }
 
     @Override
@@ -185,7 +185,7 @@ implements SimpleVolumeMountValidator
         final AbstractDataResourceValidator.Result dataResult = context.findDataValidatorResult(
                 targetUuid 
                 );
-        final AbstractStorageResourceValidator.Result storageResult = context.findStorageValidatorResult(
+        final AbstractStorageReservationValidator.Result storageResult = context.findStorageValidatorResult(
                 targetUuid
                 );
         

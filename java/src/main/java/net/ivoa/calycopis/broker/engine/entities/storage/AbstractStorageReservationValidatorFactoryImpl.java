@@ -49,19 +49,19 @@ import net.ivoa.calycopis.broker.engine.functional.validator.ValidatorFactoryImp
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractStorageResource;
 
 /**
- * An AbstractStorageResourceValidatorFactory implementation.
+ * An AbstractStorageReservationValidatorFactory implementation.
  * 
  */
-public class AbstractStorageResourceValidatorFactoryImpl
-extends ValidatorFactoryImpl<IvoaAbstractStorageResource, AbstractStorageResourceEntity>
-implements AbstractStorageResourceValidatorFactory
+public class AbstractStorageReservationValidatorFactoryImpl
+extends ValidatorFactoryImpl<IvoaAbstractStorageResource, AbstractStorageReservationEntity>
+implements AbstractStorageReservationValidatorFactory
     {
 
     /**
      * Public constructor used by our Platform.
      * 
      */
-    public AbstractStorageResourceValidatorFactoryImpl()
+    public AbstractStorageReservationValidatorFactoryImpl()
         {
         super();
         }
@@ -72,35 +72,35 @@ implements AbstractStorageResourceValidatorFactory
      *
      */
     @Override
-    protected Validator.Result<IvoaAbstractStorageResource, AbstractStorageResourceEntity> newResult(final ResultEnum result)
+    protected Validator.Result<IvoaAbstractStorageResource, AbstractStorageReservationEntity> newResult(final ResultEnum result)
         {
-        return new AbstractStorageResourceValidator.ResultBean(
+        return new AbstractStorageReservationValidator.ResultBean(
             result
             );
         }
 
     /**
-     * Validate a StorageResource, needed to resolve the inherited generics.
+     * Validate a StorageReservation, needed to resolve the inherited generics.
      *
      */
-    public AbstractStorageResourceValidator.Result validateObject(
+    public AbstractStorageReservationValidator.Result validateObject(
         final IvoaAbstractStorageResource object,
         final OfferSetRequestParserContext context
         ){
-        Validator.Result<IvoaAbstractStorageResource, AbstractStorageResourceEntity> result = super.validateObject(
+        Validator.Result<IvoaAbstractStorageResource, AbstractStorageReservationEntity> result = super.validateObject(
             object,
             context
             );
-        if (result instanceof AbstractStorageResourceValidator.Result)
+        if (result instanceof AbstractStorageReservationValidator.Result)
             {
-            return (AbstractStorageResourceValidator.Result) result;
+            return (AbstractStorageReservationValidator.Result) result;
             }
         //
         // A validator returned a result of the wrong type. Fail the validation
         // rather than throwing, so that a request we cannot validate becomes a
         // NO with an empty offer list, not a 500 response (see issue #147).
         //
-        return new AbstractStorageResourceValidator.ResultBean(
+        return new AbstractStorageReservationValidator.ResultBean(
             ResultEnum.FAILED
             );
         } 

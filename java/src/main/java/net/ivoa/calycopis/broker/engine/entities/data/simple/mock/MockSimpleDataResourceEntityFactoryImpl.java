@@ -40,7 +40,7 @@ import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceValida
 import net.ivoa.calycopis.broker.engine.entities.data.simple.SimpleDataResourceEntity;
 import net.ivoa.calycopis.broker.engine.entities.data.simple.SimpleDataResourceEntityFactoryImpl;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 
 /**
  *
@@ -66,7 +66,7 @@ implements MockSimpleDataResourceEntityFactory
     @Override
     public SimpleDataResourceEntity create(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceEntity storage,
+        final AbstractStorageReservationEntity storage,
         final AbstractDataResourceValidator.Result result
         ){
         return this.repository.save(

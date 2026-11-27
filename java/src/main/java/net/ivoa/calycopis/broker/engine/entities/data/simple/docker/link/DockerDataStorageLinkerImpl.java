@@ -42,13 +42,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.data.simple.docker.file.DockerSimpleDataFileResourceValidatorImpl;
 import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator.Result;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator.ResultBean;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResource;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.bind.DockerBindMountStorageEntityFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.volume.DockerVolumeMountStorageEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator.Result;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator.ResultBean;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservation;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.bind.DockerBindMountStorageReservationEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.volume.DockerVolumeMountStorageReservationEntityFactory;
 import net.ivoa.calycopis.broker.engine.functional.factory.FactoryBaseImpl;
 import net.ivoa.calycopis.broker.engine.functional.validator.Validator;
 import net.ivoa.calycopis.broker.engine.functional.validator.Validator.ResultEnum;
@@ -66,16 +66,16 @@ extends FactoryBaseImpl
 implements DockerDataStorageLinker
     {
 
-    private final DockerBindMountStorageEntityFactory   bindMountFactory;
-    private final DockerVolumeMountStorageEntityFactory volumeMountFactory;
+    private final DockerBindMountStorageReservationEntityFactory   bindMountFactory;
+    private final DockerVolumeMountStorageReservationEntityFactory volumeMountFactory;
     
     /**
      * Public constructor, used by our Platform.
      * 
      */
     public DockerDataStorageLinkerImpl(
-        final DockerBindMountStorageEntityFactory   bindMountFactory,
-        final DockerVolumeMountStorageEntityFactory volumeMountFactory
+        final DockerBindMountStorageReservationEntityFactory   bindMountFactory,
+        final DockerVolumeMountStorageReservationEntityFactory volumeMountFactory
         ){
         super();
         this.bindMountFactory   = bindMountFactory;
@@ -83,7 +83,7 @@ implements DockerDataStorageLinker
         }
 
     @Override
-    public AbstractStorageResourceValidator.Result linkStorage(
+    public AbstractStorageReservationValidator.Result linkStorage(
         final IvoaAbstractDataResource requested,
         final IvoaAbstractDataResource validated,
         final OfferSetRequestParserContext context
@@ -135,7 +135,7 @@ implements DockerDataStorageLinker
             }
         }
     
-    protected AbstractStorageResourceValidator.Result linkSimple(
+    protected AbstractStorageReservationValidator.Result linkSimple(
         final IvoaSimpleDataResource requested,
         final IvoaSimpleDataResource validated,
         final OfferSetRequestParserContext context
@@ -215,14 +215,14 @@ implements DockerDataStorageLinker
             }
         }
     
-    protected AbstractStorageResourceValidator.Result linkBindMount(
+    protected AbstractStorageReservationValidator.Result linkBindMount(
         final IvoaSimpleDataResource requested,
         final IvoaSimpleDataResource validated,
         final OfferSetRequestParserContext context
         ){
 
         IvoaAbstractStorageResource template = new IvoaAbstractStorageResource()
-            .kind(SimpleStorageResource.KIND_DISCRIMINATOR)
+            .kind(SimpleStorageReservation.KIND_DISCRIMINATOR)
             .meta(
                 new IvoaComponentMetadata()
                 .name("BindMount")
@@ -230,12 +230,12 @@ implements DockerDataStorageLinker
                 .uuid(UUID.randomUUID())
                 );
         
-        AbstractStorageResourceValidator.Result result = new AbstractStorageResourceValidator.ResultBean(
+        AbstractStorageReservationValidator.Result result = new AbstractStorageReservationValidator.ResultBean(
             Validator.ResultEnum.ACCEPTED,
             template
             ){
             @Override
-            public AbstractStorageResourceEntity build(final SimpleExecutionSessionEntity session)
+            public AbstractStorageReservationEntity build(final SimpleExecutionSessionEntity session)
                 {
                 this.entity = DockerDataStorageLinkerImpl.this.bindMountFactory.create(
                     session,
@@ -272,7 +272,7 @@ implements DockerDataStorageLinker
         ){
         
         IvoaAbstractStorageResource template = new IvoaAbstractStorageResource()
-            .kind(SimpleStorageResource.KIND_DISCRIMINATOR)
+            .kind(SimpleStorageReservation.KIND_DISCRIMINATOR)
             .meta(
                 new IvoaComponentMetadata()
                 .name("VolumeMount")
@@ -286,12 +286,12 @@ implements DockerDataStorageLinker
             template
             );
         
-        AbstractStorageResourceValidator.Result result = new AbstractStorageResourceValidator.ResultBean(
+        AbstractStorageReservationValidator.Result result = new AbstractStorageReservationValidator.ResultBean(
             Validator.ResultEnum.ACCEPTED,
             template
             ){
             @Override
-            public AbstractStorageResourceEntity build(final SimpleExecutionSessionEntity session)
+            public AbstractStorageReservationEntity build(final SimpleExecutionSessionEntity session)
                 {
                 log.debug(
                     "Building storage resource [{}]",

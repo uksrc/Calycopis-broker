@@ -40,10 +40,10 @@ import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator.Result;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidatorFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResource;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator.Result;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidatorFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservation;
 import net.ivoa.calycopis.broker.engine.functional.factory.FactoryBaseImpl;
 import net.ivoa.calycopis.broker.engine.functional.validator.Validator.ResultEnum;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractDataResource;
@@ -61,17 +61,17 @@ implements MockDataStorageLinker
     {
     
     /**
-     * A factory for StorageResource Validators.
+     * A factory for StorageReservation Validators.
      *
      */
-    private final AbstractStorageResourceValidatorFactory abstractStorageValidatorFactory;
+    private final AbstractStorageReservationValidatorFactory abstractStorageValidatorFactory;
 
     /**
      * Public constructor, used by our Platform
      * 
      */
     public MockDataStorageLinkerImpl(
-        final AbstractStorageResourceValidatorFactory abstractStorageValidatorFactory
+        final AbstractStorageReservationValidatorFactory abstractStorageValidatorFactory
         ){
         this.abstractStorageValidatorFactory = abstractStorageValidatorFactory ;
         }
@@ -87,7 +87,7 @@ implements MockDataStorageLinker
         // Check for a validated storage resource.
         if (requested.getStorage() != null)
             {
-            AbstractStorageResourceValidator.Result found = context.findStorageValidatorResult(
+            AbstractStorageReservationValidator.Result found = context.findStorageValidatorResult(
                 requested.getStorage()
                 );
 
@@ -115,7 +115,7 @@ implements MockDataStorageLinker
             // TODO Replace this with the default storage pool for this platform.
             IvoaSimpleStorageResource template = new IvoaSimpleStorageResource()
                 .kind(
-                    SimpleStorageResource.KIND_DISCRIMINATOR
+                    SimpleStorageReservation.KIND_DISCRIMINATOR
                     )                    
                 .meta(
                     new IvoaComponentMetadata().name(
@@ -126,8 +126,8 @@ implements MockDataStorageLinker
                 );
 
             //
-            // Validate the new StorageResource.
-            AbstractStorageResourceValidator.Result storageResult = abstractStorageValidatorFactory.validateObject(
+            // Validate the new StorageReservation.
+            AbstractStorageReservationValidator.Result storageResult = abstractStorageValidatorFactory.validateObject(
                 template,
                 context
                 );
@@ -140,13 +140,13 @@ implements MockDataStorageLinker
                 );            
             }
         context.valid(false);
-        return new AbstractStorageResourceValidator.ResultBean(
+        return new AbstractStorageReservationValidator.ResultBean(
             ResultEnum.FAILED
             );
         }
     
-    public AbstractStorageResourceValidator.Result acceptResult(
-        final AbstractStorageResourceValidator.Result storageResult, 
+    public AbstractStorageReservationValidator.Result acceptResult(
+        final AbstractStorageReservationValidator.Result storageResult,
         final IvoaAbstractDataResource requested,
         final IvoaAbstractDataResource validated,
         final OfferSetRequestParserContext context
@@ -189,7 +189,7 @@ implements MockDataStorageLinker
                 );
             }
         context.valid(false);
-        return new AbstractStorageResourceValidator.ResultBean(
+        return new AbstractStorageReservationValidator.ResultBean(
             ResultEnum.FAILED
             );
         }

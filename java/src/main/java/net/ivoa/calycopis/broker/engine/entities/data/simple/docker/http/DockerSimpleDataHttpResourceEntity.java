@@ -84,8 +84,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.component.LifecycleComponent;
 import net.ivoa.calycopis.broker.engine.entities.data.simple.SimpleDataResourceEntity;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResource;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservation;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.DockerStorageLinkerImpl;
 import net.ivoa.calycopis.broker.engine.functional.platform.Platform;
 import net.ivoa.calycopis.broker.engine.functional.platform.docker.DockerClientFactory;
@@ -123,7 +123,7 @@ implements DockerSimpleDataHttpResource
      */
     protected DockerSimpleDataHttpResourceEntity(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceEntity storage,
+        final AbstractStorageReservationEntity storage,
         final DockerSimpleDataHttpResourceValidator.Result result
         ){
         super(
@@ -143,7 +143,7 @@ implements DockerSimpleDataHttpResource
             this.getUuid(),
             this.getClass().getSimpleName()
             );
-        final AbstractStorageResource storage = this.getStorage();
+        final AbstractStorageReservation storage = this.getStorage();
 
         if (storage == null)
             {
@@ -183,7 +183,7 @@ implements DockerSimpleDataHttpResource
 // TODO Fix the hard coded path and mode.
 // **
         final DockerStorageLinkerImpl linker = new DockerStorageLinkerImpl("/data", AccessMode.rw);
-        ((AbstractStorageResourceEntity) storage).link(linker);
+        ((AbstractStorageReservationEntity) storage).link(linker);
         final String volumeName = linker.getSourcePath();
         if (volumeName == null || volumeName.isEmpty())
             {

@@ -26,7 +26,7 @@ package net.ivoa.calycopis.broker.engine.entities.data;
 import java.net.URI;
 
 import net.ivoa.calycopis.broker.engine.entities.component.LifecycleComponent;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResource;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservation;
 
 /**
  * 
@@ -45,7 +45,7 @@ extends LifecycleComponent
      * Get the storage for this data.  
      *
      */
-    public AbstractStorageResource getStorage();
+    public AbstractStorageReservation getStorage();
 
     /**
      * Get the list of volume mounts this resource is attached to.

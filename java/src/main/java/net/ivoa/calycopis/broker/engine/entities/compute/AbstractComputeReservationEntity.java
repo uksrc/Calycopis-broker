@@ -104,7 +104,7 @@ import net.ivoa.calycopis.broker.engine.entities.compute.pool.AbstractComputeRes
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntity;
 import net.ivoa.calycopis.broker.engine.entities.executable.AbstractExecutableEntity;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMount;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountEntity;
 import net.ivoa.calycopis.broker.engine.functional.booking.compute.simple.SimpleComputeOffer;
@@ -330,7 +330,7 @@ implements AbstractComputeReservation
                     }
                 }
             else {
-                AbstractStorageResourceEntity storageResource = mount.getStorageResource();
+                AbstractStorageReservationEntity storageResource = mount.getStorageReservation();
                 if (storageResource != null)
                     {
                     //

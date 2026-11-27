@@ -52,7 +52,7 @@ import jakarta.persistence.Table;
 import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.compute.AbstractComputeReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountEntity;
 import net.ivoa.calycopis.broker.engine.util.URIBuilder;
 import net.ivoa.calycopis.openapi.spring.model.IvoaSimpleVolumeMount;
@@ -112,7 +112,7 @@ implements SimpleVolumeMount
      */
     public SimpleVolumeMountEntity(
         final AbstractComputeReservationEntity computeResource,
-        final AbstractStorageResourceEntity storageResource,
+        final AbstractStorageReservationEntity storageResource,
         final SimpleVolumeMountValidator.Result result
         ){
         super(
@@ -189,10 +189,10 @@ implements SimpleVolumeMount
                 this.getDataResource().getUuid().toString()
                 );
             }
-        if (this.getStorageResource() != null)
+        if (this.getStorageReservation() != null)
             {
             bean.setResource(
-                this.getStorageResource().getUuid().toString()
+                this.getStorageReservation().getUuid().toString()
                 );
             }
         return bean;

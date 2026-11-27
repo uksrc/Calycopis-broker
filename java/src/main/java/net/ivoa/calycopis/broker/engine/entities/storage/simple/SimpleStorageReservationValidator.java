@@ -1,7 +1,7 @@
 /*
  * <meta:header>
  *   <meta:licence>
- *     Copyright (C) 2026 University of Manchester.
+ *     Copyright (C) 2025 University of Manchester.
  *
  *     This information is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,11 +21,14 @@
  *
  */
 
-package net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.volume;
+package net.ivoa.calycopis.broker.engine.entities.storage.simple;
 
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResourceEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 
-public interface DockerVolumeMountStorageEntityFactory
-extends SimpleStorageResourceEntityFactory
+/**
+ * 
+ */
+public interface SimpleStorageReservationValidator
+extends AbstractStorageReservationValidator
     {
     }

@@ -193,7 +193,7 @@ implements SessionProcessingRequest
                 data
                 );
             }
-        for (LifecycleComponentEntity storage: session.getStorageResources())
+        for (LifecycleComponentEntity storage: session.getStorageReservations())
             {
             filter.count(
                 storage

@@ -1,7 +1,7 @@
 /*
  * <meta:header>
  *   <meta:licence>
- *     Copyright (C) 2026 University of Manchester.
+ *     Copyright (C) 2025 University of Manchester.
  *
  *     This information is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -18,30 +18,28 @@
  *   </meta:licence>
  * </meta:header>
  *
+ * AIMetrics: [
+ *     {
+ *     "name": "Cursor CLI",
+ *     "version": "2026.02.13-41ac335",
+ *     "model": "Claude 4.6 Opus (Thinking)",
+ *     "contribution": {
+ *       "value": 100,
+ *       "units": "%"
+ *       }
+ *     }
+ *   ]
  *
  */
 
-package net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.bind;
+package net.ivoa.calycopis.broker.engine.entities.storage.simple.mock;
 
-import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResourceEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservationValidator;
 
 /**
  * 
  */
-public interface DockerBindMountStorageEntityFactory
-extends SimpleStorageResourceEntityFactory
+public interface MockSimpleStorageReservationValidator
+extends SimpleStorageReservationValidator
     {
-
-    /**
-     * Create a DockerBindMountStorageEntity using the specified path.
-     * 
-     */
-    public DockerBindMountStorageEntity create(
-        final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceValidator.Result result,
-        final String path
-        );
-
     }

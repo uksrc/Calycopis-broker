@@ -18,28 +18,29 @@
  *   </meta:licence>
  * </meta:header>
  *
+ * AIMetrics: [
+ *     {
+ *     "timestamp": "2026-04-11T06:00:00",
+ *     "name": "Cursor CLI",
+ *     "version": "2026.02.13-41ac335",
+ *     "model": "Claude 4.6 Opus (Thinking)",
+ *     "contribution": {
+ *       "value": 100,
+ *       "units": "%"
+ *       }
+ *     }
+ *   ]
  *
  */
 
-package net.ivoa.calycopis.broker.engine.entities.storage;
+package net.ivoa.calycopis.broker.engine.entities.storage.simple.docker;
 
-import net.ivoa.calycopis.broker.engine.entities.component.LifecycleComponentEntityFactory;
-import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservationEntityFactory;
 
 /**
  *
  */
-public interface AbstractStorageResourceEntityFactory
-extends LifecycleComponentEntityFactory<AbstractStorageResourceEntity>
+public interface DockerSimpleStorageReservationEntityFactory
+extends SimpleStorageReservationEntityFactory
     {
-
-    /**
-     * Create a new StorageResourceEntity based on a Validator Result.
-     *
-     */
-    public AbstractStorageResourceEntity create(
-        final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceValidator.Result result
-        );
-
     }

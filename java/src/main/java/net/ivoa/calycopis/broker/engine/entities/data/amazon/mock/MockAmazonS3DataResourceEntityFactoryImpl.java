@@ -50,7 +50,7 @@ import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceValida
 import net.ivoa.calycopis.broker.engine.entities.data.amazon.AmazonS3DataResourceEntity;
 import net.ivoa.calycopis.broker.engine.entities.data.amazon.AmazonS3DataResourceEntityFactoryImpl;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 
 /**
  *
@@ -76,7 +76,7 @@ implements MockAmazonS3DataResourceEntityFactory
     @Override
     public AmazonS3DataResourceEntity create(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceEntity storage,
+        final AbstractStorageReservationEntity storage,
         final AbstractDataResourceValidator.Result result
         ){
         return this.repository.save(

@@ -1,7 +1,7 @@
 /*
  * <meta:header>
  *   <meta:licence>
- *     Copyright (C) 2026 University of Manchester.
+ *     Copyright (C) 2024 University of Manchester.
  *
  *     This information is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -18,29 +18,18 @@
  *   </meta:licence>
  * </meta:header>
  *
- * AIMetrics: [
- *     {
- *     "timestamp": "2026-04-11T06:00:00",
- *     "name": "Cursor CLI",
- *     "version": "2026.02.13-41ac335",
- *     "model": "Claude 4.6 Opus (Thinking)",
- *     "contribution": {
- *       "value": 100,
- *       "units": "%"
- *       }
- *     }
- *   ]
  *
  */
 
-package net.ivoa.calycopis.broker.engine.entities.storage.simple.docker;
+package net.ivoa.calycopis.broker.engine.entities.storage.simple;
 
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResourceEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntityFactory;
 
 /**
  *
  */
-public interface DockerSimpleStorageResourceEntityFactory
-extends SimpleStorageResourceEntityFactory
+public interface SimpleStorageReservationEntityFactory
+extends AbstractStorageReservationEntityFactory
     {
     }
+

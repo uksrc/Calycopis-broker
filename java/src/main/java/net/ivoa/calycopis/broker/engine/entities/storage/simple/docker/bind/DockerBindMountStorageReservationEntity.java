@@ -63,8 +63,8 @@ import jakarta.persistence.Table;
 import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
 import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageLinker;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.storage.simple.docker.DockerStorageLinker;
 import net.ivoa.calycopis.broker.engine.functional.platform.Platform;
 import net.ivoa.calycopis.broker.engine.functional.processing.action.ProcessingAction;
@@ -78,20 +78,20 @@ import net.ivoa.calycopis.openapi.spring.model.IvoaLifecyclePhase;
 @Slf4j
 @Entity
 @Table(
-    name = "dockerbindmountstorage"
+    name = "dockerbindmountstoragereservations"
     )
 @DiscriminatorValue(
     value="uri:docker-bind-storage"
     )
-public class DockerBindMountStorageEntity
-extends SimpleStorageResourceEntity
-implements DockerBindMountStorage
+public class DockerBindMountStorageReservationEntity
+extends SimpleStorageReservationEntity
+implements DockerBindMountStorageReservation
     {
 
     /**
      * 
      */
-    public DockerBindMountStorageEntity()
+    public DockerBindMountStorageReservationEntity()
         {
         super();
         }
@@ -99,9 +99,9 @@ implements DockerBindMountStorage
     /**
      * 
      */
-    public DockerBindMountStorageEntity(
+    public DockerBindMountStorageReservationEntity(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceValidator.Result result,
+        final AbstractStorageReservationValidator.Result result,
         final String hostPath
         ){
         super(

@@ -71,7 +71,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceValidator;
 import net.ivoa.calycopis.broker.engine.entities.data.amazon.AmazonS3DataResourceEntity;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.functional.platform.Platform;
 import net.ivoa.calycopis.broker.engine.functional.processing.action.ProcessingAction;
 import net.ivoa.calycopis.broker.engine.functional.processing.action.mock.MockActionBuilder;
@@ -104,7 +104,7 @@ implements MockAmazonS3DataResource
      */
     protected MockAmazonS3DataResourceEntity(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceEntity storage,
+        final AbstractStorageReservationEntity storage,
         final AbstractDataResourceValidator.Result result
         ){
         super(

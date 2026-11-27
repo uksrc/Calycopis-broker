@@ -24,7 +24,7 @@
 package net.ivoa.calycopis.broker.engine.entities.data;
 
 import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 import net.ivoa.calycopis.broker.engine.functional.factory.FactoryBase;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractDataResource;
 
@@ -38,7 +38,7 @@ extends FactoryBase
      * Link, or create, a storage resource to a data resource,
      * 
      */
-    public AbstractStorageResourceValidator.Result linkStorage(
+    public AbstractStorageReservationValidator.Result linkStorage(
         final IvoaAbstractDataResource requested,
         final IvoaAbstractDataResource validated,
         final OfferSetRequestParserContext context

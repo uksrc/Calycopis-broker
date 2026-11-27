@@ -25,7 +25,7 @@ package net.ivoa.calycopis.broker.engine.entities.data;
 
 import net.ivoa.calycopis.broker.engine.entities.component.LifecycleComponentEntityFactory;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 
 /**
  *
@@ -39,7 +39,7 @@ extends LifecycleComponentEntityFactory<AbstractDataResourceEntity>
      */
     public AbstractDataResourceEntity create(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceEntity storage,
+        final AbstractStorageReservationEntity storage,
         final AbstractDataResourceValidator.Result result
         );
     }

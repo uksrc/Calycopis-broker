@@ -47,28 +47,28 @@ package net.ivoa.calycopis.broker.engine.entities.storage.simple.mock;
 import java.util.Map;
 
 import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntityFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResourceValidatorImpl;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservationValidatorImpl;
 import net.ivoa.calycopis.openapi.spring.model.IvoaSimpleStorageResource;
 import net.ivoa.calycopis.openapi.spring.model.IvoaSimpleStorageSize;
 
 /**
  * 
  */
-public class MockSimpleStorageResourceValidatorImpl
-extends SimpleStorageResourceValidatorImpl
-implements MockSimpleStorageResourceValidator
+public class MockSimpleStorageReservationValidatorImpl
+extends SimpleStorageReservationValidatorImpl
+implements MockSimpleStorageReservationValidator
     {
 
     /**
      * Public constructor used by our Platform.
      * 
      */
-    public MockSimpleStorageResourceValidatorImpl(
-        final AbstractStorageResourceEntityFactory abstractStorageResourceEntityFactory
+    public MockSimpleStorageReservationValidatorImpl(
+        final AbstractStorageReservationEntityFactory abstractStorageReservationEntityFactory
         ){
         super(
-            abstractStorageResourceEntityFactory
+            abstractStorageReservationEntityFactory
             );
         }
 

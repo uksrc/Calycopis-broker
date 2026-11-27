@@ -60,8 +60,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.functional.platform.Platform;
 import net.ivoa.calycopis.broker.engine.functional.processing.action.ProcessingAction;
 import net.ivoa.calycopis.broker.engine.functional.processing.action.mock.MockActionBuilder;
@@ -72,21 +72,21 @@ import net.ivoa.calycopis.broker.engine.functional.processing.action.mock.MockAc
 @Slf4j
 @Entity
 @Table(
-    name = "mocksimplestorageresources"
+    name = "mocksimplestoragereservations"
     )
 @DiscriminatorValue(
     value="uri:mock-simple-storage-resource"
     )
-public class MockSimpleStorageResourceEntity
-extends SimpleStorageResourceEntity
-implements MockSimpleStorageResource
+public class MockSimpleStorageReservationEntity
+extends SimpleStorageReservationEntity
+implements MockSimpleStorageReservation
     {
 
     /**
      * Protected constructor for JPA entities.
      * 
      */
-    protected MockSimpleStorageResourceEntity()
+    protected MockSimpleStorageReservationEntity()
         {
         super();
         }
@@ -95,9 +95,9 @@ implements MockSimpleStorageResource
      * Protected constructor used by our Factories.
      *
      */
-    protected MockSimpleStorageResourceEntity(
+    protected MockSimpleStorageReservationEntity(
         final SimpleExecutionSessionEntity session,
-        final AbstractStorageResourceValidator.Result result
+        final AbstractStorageReservationValidator.Result result
         ){
         super(
             session,

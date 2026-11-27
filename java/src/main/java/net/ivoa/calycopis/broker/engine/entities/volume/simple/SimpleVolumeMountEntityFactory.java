@@ -47,7 +47,7 @@ package net.ivoa.calycopis.broker.engine.entities.volume.simple;
 
 import net.ivoa.calycopis.broker.engine.entities.compute.AbstractComputeReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountEntityFactory;
 
 /**
@@ -68,12 +68,12 @@ extends AbstractVolumeMountEntityFactory
         );
 
     /**
-     * Create a new SimpleVolumeMountEntity linking a ComputeResource and StorageResource.
+     * Create a new SimpleVolumeMountEntity linking a ComputeResource and StorageReservation.
      *
      */
     public SimpleVolumeMountEntity create(
         final AbstractComputeReservationEntity computeResource,
-        final AbstractStorageResourceEntity storageResource,
+        final AbstractStorageReservationEntity storageResource,
         final SimpleVolumeMountValidator.Result result
         );
     }

@@ -623,7 +623,7 @@ following endpoints:
      256-core, 256-GiB allocation from the bootstrap; there is no separate
      global capacity setting. The query counts only live reservations made from
      the same pool, so capacity in one pool does not consume another.
-   * AbstractStorageResource → SimpleStorageResource.
+   * AbstractStorageReservation → SimpleStorageReservation.
    * AbstractVolumeMount → SimpleVolumeMount.
    * AbstractDataResource → SimpleDataResource, S3DataResource, RucioDataResource, IvoaDataResource, SkaoDataResource.
    * AbstractExecutionSession → SimpleExecutionSession, ScheduledExecutionSession.
@@ -636,7 +636,7 @@ following endpoints:
    * ExecutionRequestComponents and SimpleExecutionComponents share the same structure:
      * executable (AbstractExecutable),
      * compute (AbstractComputeReservation),
-     * storage (AbstractStorageResourceList),
+     * storage (List<AbstractStorageReservation>),
      * volumes (AbstractVolumeMountList),
      * data (AbstractDataResourceList).
    * This gives a uniform way to describe what an execution needs vs. what an execution session actually has.
@@ -673,7 +673,7 @@ following endpoints:
    * This gives brokers enough flexibility to negotiate between min/max resources.
 
  * Storage & volumes
-   * SimpleStorageResource with SimpleStorageSize (min/max GiB) and optional data list.
+   * SimpleStorageReservation with SimpleStorageSize (min/max GiB) and optional data list.
    * SimpleVolumeMount uses path, mode (READONLY / READWRITE), cardinality (SINGLE / CONTAINER), resources list.
    * The API distinguishes between where data lives (AbstractDataResource) and how it is presented to the executable's filesystem (volume mounts).
 

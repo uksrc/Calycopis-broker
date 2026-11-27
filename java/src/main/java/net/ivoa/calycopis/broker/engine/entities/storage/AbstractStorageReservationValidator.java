@@ -44,11 +44,11 @@ import net.ivoa.calycopis.broker.engine.functional.validator.Validator;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractStorageResource;
 
 /**
- * Public interface for AbstractStorageResource Validators.
+ * Public interface for AbstractStorageReservation Validators.
  * 
  */
-public interface AbstractStorageResourceValidator
-extends Validator<IvoaAbstractStorageResource, AbstractStorageResourceEntity>
+public interface AbstractStorageReservationValidator
+extends Validator<IvoaAbstractStorageResource, AbstractStorageReservationEntity>
     {
 
     /**
@@ -56,7 +56,7 @@ extends Validator<IvoaAbstractStorageResource, AbstractStorageResourceEntity>
      * 
      */
     public interface Result
-    extends Validator.Result<IvoaAbstractStorageResource, AbstractStorageResourceEntity> 
+    extends Validator.Result<IvoaAbstractStorageResource, AbstractStorageReservationEntity>
         {
 
         /**
@@ -79,7 +79,7 @@ extends Validator<IvoaAbstractStorageResource, AbstractStorageResourceEntity>
      */
     @Slf4j
     public static class ResultBean
-    extends Validator.ResultBean<IvoaAbstractStorageResource, AbstractStorageResourceEntity>
+    extends Validator.ResultBean<IvoaAbstractStorageResource, AbstractStorageReservationEntity>
     implements Result
         {
         /**

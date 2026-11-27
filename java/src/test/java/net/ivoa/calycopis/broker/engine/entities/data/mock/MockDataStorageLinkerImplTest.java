@@ -42,7 +42,7 @@ import net.ivoa.calycopis.broker.engine.entities.identity.IdentityEntity;
 import net.ivoa.calycopis.broker.engine.entities.message.Message;
 import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
 import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContextImpl;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidator;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidator;
 import net.ivoa.calycopis.broker.engine.functional.validator.Validator.ResultEnum;
 import net.ivoa.calycopis.openapi.spring.model.IvoaExecutionRequest;
 import net.ivoa.calycopis.openapi.spring.model.IvoaSimpleDataResource;
@@ -110,7 +110,7 @@ public class MockDataStorageLinkerImplTest
             (IdentityEntity) null
             );
         linker.acceptResult(
-            new AbstractStorageResourceValidator.ResultBean(
+            new AbstractStorageReservationValidator.ResultBean(
                 ResultEnum.ACCEPTED
                 ),
             requested,
@@ -137,7 +137,7 @@ public class MockDataStorageLinkerImplTest
             (IdentityEntity) null
             );
         linker.acceptResult(
-            new AbstractStorageResourceValidator.ResultBean(
+            new AbstractStorageReservationValidator.ResultBean(
                 ResultEnum.FAILED
                 ),
             requested,

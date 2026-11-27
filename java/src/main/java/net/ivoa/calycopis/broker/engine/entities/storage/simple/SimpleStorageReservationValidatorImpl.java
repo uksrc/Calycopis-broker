@@ -56,43 +56,43 @@ package net.ivoa.calycopis.broker.engine.entities.storage.simple;
 import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.offerset.OfferSetRequestParserContext;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntity;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceEntityFactory;
-import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageResourceValidatorImpl;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationEntityFactory;
+import net.ivoa.calycopis.broker.engine.entities.storage.AbstractStorageReservationValidatorImpl;
 import net.ivoa.calycopis.broker.engine.functional.validator.Validator;
 import net.ivoa.calycopis.broker.engine.functional.validator.ValidatorTools;
 import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractStorageResource;
 import net.ivoa.calycopis.openapi.spring.model.IvoaSimpleStorageResource;
 
 /**
- * A Validator implementation to handle SimpleStorageResources.
+ * A Validator implementation to handle SimpleStorageReservations.
  * 
  */
 @Slf4j
-public abstract class SimpleStorageResourceValidatorImpl
-extends AbstractStorageResourceValidatorImpl
-implements SimpleStorageResourceValidator
+public abstract class SimpleStorageReservationValidatorImpl
+extends AbstractStorageReservationValidatorImpl
+implements SimpleStorageReservationValidator
     {
 
     /**
      * Factory for creating Entities.
      *
      */
-    final AbstractStorageResourceEntityFactory entityFactory;
+    final AbstractStorageReservationEntityFactory entityFactory;
 
     /**
      * Protected constructor.
      * 
      */
-    protected SimpleStorageResourceValidatorImpl(
-        final AbstractStorageResourceEntityFactory entityFactory
+    protected SimpleStorageReservationValidatorImpl(
+        final AbstractStorageReservationEntityFactory entityFactory
         ){
         super();
         this.entityFactory = entityFactory;
         }
     
     @Override
-    public SimpleStorageResourceValidator.Result validateObject(
+    public SimpleStorageReservationValidator.Result validateObject(
         final IvoaAbstractStorageResource requested,
         final OfferSetRequestParserContext context
         ){
@@ -106,7 +106,7 @@ implements SimpleStorageResourceValidator
                     context
                     );
             default:
-                return new SimpleStorageResourceValidator.ResultBean(
+                return new SimpleStorageReservationValidator.ResultBean(
                     ResultEnum.CONTINUE
                     );
             }
@@ -116,7 +116,7 @@ implements SimpleStorageResourceValidator
      * Validate an IvoaSimpleStorageResource.
      *
      */
-    public SimpleStorageResourceValidator.Result validate(
+    public SimpleStorageReservationValidator.Result validate(
         final IvoaSimpleStorageResource requested,
         final OfferSetRequestParserContext context
         ){
@@ -125,7 +125,7 @@ implements SimpleStorageResourceValidator
 
         boolean success = true ;
         IvoaSimpleStorageResource validated = new IvoaSimpleStorageResource()
-            .kind(SimpleStorageResource.KIND_DISCRIMINATOR)
+            .kind(SimpleStorageReservation.KIND_DISCRIMINATOR)
             .meta(
                 ValidatorTools.makeMeta(
                     requested.getMeta(),
@@ -145,14 +145,14 @@ implements SimpleStorageResourceValidator
         // Everything is good, create our Result.
         if (success)
             {
-            SimpleStorageResourceValidator.Result result = new SimpleStorageResourceValidator.ResultBean(
+            SimpleStorageReservationValidator.Result result = new SimpleStorageReservationValidator.ResultBean(
                 Validator.ResultEnum.ACCEPTED,
                 validated
                 ){
                 @Override
-                public AbstractStorageResourceEntity build(final SimpleExecutionSessionEntity session)
+                public AbstractStorageReservationEntity build(final SimpleExecutionSessionEntity session)
                     {
-                    this.entity = SimpleStorageResourceValidatorImpl.this.entityFactory.create(
+                    this.entity = SimpleStorageReservationValidatorImpl.this.entityFactory.create(
                         session,
                         this
                         );
@@ -162,7 +162,7 @@ implements SimpleStorageResourceValidator
                 @Override
                 public Long getPrepareDuration()    
                     {
-                    return SimpleStorageResourceValidatorImpl.this.getPrepareDuration(
+                    return SimpleStorageReservationValidatorImpl.this.getPrepareDuration(
                         validated
                         );
                     }
@@ -170,7 +170,7 @@ implements SimpleStorageResourceValidator
                 @Override
                 public Long getReleaseDuration()    
                     {
-                    return SimpleStorageResourceValidatorImpl.this.getReleaseDuration(
+                    return SimpleStorageReservationValidatorImpl.this.getReleaseDuration(
                         validated
                         );
                     }
@@ -195,7 +195,7 @@ implements SimpleStorageResourceValidator
         // Something wasn't right, fail the validation.
         else {
             context.valid(false);
-            return new SimpleStorageResourceValidator.ResultBean(
+            return new SimpleStorageReservationValidator.ResultBean(
                 ResultEnum.FAILED
                 );
             }

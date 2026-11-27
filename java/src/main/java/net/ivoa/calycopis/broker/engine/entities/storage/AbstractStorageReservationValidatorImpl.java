@@ -18,28 +18,19 @@
  *   </meta:licence>
  * </meta:header>
  *
- * AIMetrics: [
- *     {
- *     "name": "Cursor CLI",
- *     "version": "2026.02.13-41ac335",
- *     "model": "Claude 4.6 Opus (Thinking)",
- *     "contribution": {
- *       "value": 100,
- *       "units": "%"
- *       }
- *     }
- *   ]
  *
  */
 
-package net.ivoa.calycopis.broker.engine.entities.storage.simple.mock;
+package net.ivoa.calycopis.broker.engine.entities.storage;
 
-import net.ivoa.calycopis.broker.engine.entities.storage.simple.SimpleStorageResourceEntityFactory;
+import net.ivoa.calycopis.broker.engine.functional.validator.AbstractValidatorImpl;
+import net.ivoa.calycopis.openapi.spring.model.IvoaAbstractStorageResource;
 
 /**
  * 
  */
-public interface MockSimpleStorageResourceEntityFactory
-extends SimpleStorageResourceEntityFactory
+public abstract class AbstractStorageReservationValidatorImpl
+extends AbstractValidatorImpl<IvoaAbstractStorageResource, AbstractStorageReservationEntity>
+implements AbstractStorageReservationValidator
     {
     }
