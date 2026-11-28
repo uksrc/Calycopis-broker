@@ -39,7 +39,7 @@ todos:
     status: completed
   - id: "commit"
     content: "Commit through bin/agent-commit after approval, push the fork and open the pull request"
-    status: pending
+    status: completed
 isProject: false
 ---
 # Plan: Storage pools, storage classes and the admin API
@@ -551,10 +551,11 @@ examples and final hardening (stage 11). Any OpenAPI or client change.
 
 status: implemented
 details: Implemented on branch `20261128-zrq-storage-pools-and-admin-api` from
-  `main` at `aacee00d`. Java compile and all 121 unit tests pass. The Python
-  `docker any` suites passed 186 tests, the `mock any` suites passed 180, and
-  the new admin storage pool tests passed 17. The changeset includes the
-  deferred Stage 2 plan-record correction. Commit pending approval.
+  `main` at `aacee00d`, commit `a3181e2b`, and open as
+  [PR #236](https://github.com/uksrc/Calycopis-broker/pull/236). Java compile
+  and all 121 unit tests pass. The Python `docker any` suites passed 186 tests,
+  the `mock any` suites passed 180, and the new admin storage pool tests passed
+  17. The changeset includes the deferred Stage 2 plan-record correction.
 
 ## AIMetrics
 
@@ -577,6 +578,16 @@ AIMetrics: [
     "model": "deepseek-v4.1-flash-1017",
     "contribution": {
       "value": 100,
+      "units": "%"
+      }
+    },
+    {
+    "interval": "2026-11-28T03:31:00/2026-11-28T03:40:00",
+    "name": "@deepseek-ai/dsh",
+    "version": "0.2.0-rc.2",
+    "model": "deepseek-v4.1-flash-1017",
+    "contribution": {
+      "value": 5,
       "units": "%"
       }
     }
