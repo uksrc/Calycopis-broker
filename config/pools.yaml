@@ -68,6 +68,16 @@
 #       "value": 5,
 #       "units": "%"
 #       }
+#     },
+#     {
+#     "interval": "2026-11-28T04:50:00/2026-11-28T05:40:00",
+#     "name": "@deepseek-ai/dsh",
+#     "version": "0.2.0-rc.2",
+#     "model": "deepseek-v4.1-flash-1017",
+#     "contribution": {
+#       "value": 10,
+#       "units": "%"
+#       }
 #     }
 #   ]
 #
@@ -195,8 +205,24 @@ calycopis:
 # an unknown class is logged and skipped, so a typo cannot create a pool that
 # serves no known class.
 #
-# Offer generation and capacity do not read these pools yet. Allocations and
-# policies arrive in later stages.
+# Offer generation and capacity do not read these pools yet. Each pool may
+# declare a list of allocations, each with a size in GiB and an optional start
+# and end. An allocation with no end is open ended; one with no start has always
+# been available. A pool that declares no allocations gets one open ended
+# allocation from the bootstrap fallback of 1024 GiB. There is no separate
+# global capacity setting. Policies arrive in a later stage.
+#
+# A custom pool could declare its own allocations, for example:
+#
+#   -
+#     name: archive
+#     description: A pool with a sized allocation window.
+#     storageClass: VOLUME
+#     allocations:
+#       -
+#         size: 2048
+#         start: 2026-12-01T00:00:00Z
+#         end: 2027-12-01T00:00:00Z
 #
             storage:
               -
