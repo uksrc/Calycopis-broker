@@ -58,6 +58,16 @@
  *       "value": 5,
  *       "units": "%"
  *       }
+ *     },
+ *     {
+ *     "timestamp": "2026-11-28T03:00:00",
+ *     "name": "@deepseek-ai/dsh",
+ *     "version": "0.2.0-rc.2",
+ *     "model": "deepseek-v4.1-flash-1017",
+ *     "contribution": {
+ *       "value": 5,
+ *       "units": "%"
+ *       }
  *     }
  *   ]
  *
@@ -537,14 +547,20 @@ public class ComputePoolBootstrapTest
         return spec;
         }
 
-    private static ComputePoolsSettings settingsOf(final List<ComputePoolSpec> specs)
+    private static PoolsSettings settingsOf(final List<ComputePoolSpec> specs)
         {
-        return new ComputePoolsSettings()
+        return new PoolsSettings()
             {
             @Override
             public List<ComputePoolSpec> getCompute()
                 {
                 return specs;
+                }
+
+            @Override
+            public List<StoragePoolSpec> getStorage()
+                {
+                return List.of();
                 }
             };
         }

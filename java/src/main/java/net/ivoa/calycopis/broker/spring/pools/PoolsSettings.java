@@ -28,6 +28,16 @@
  *       "value": 100,
  *       "units": "%"
  *       }
+ *     },
+ *     {
+ *     "timestamp": "2026-11-28T03:00:00",
+ *     "name": "@deepseek-ai/dsh",
+ *     "version": "0.2.0-rc.2",
+ *     "model": "deepseek-v4.1-flash-1017",
+ *     "contribution": {
+ *       "value": 100,
+ *       "units": "%"
+ *       }
  *     }
  *   ]
  *
@@ -38,13 +48,14 @@ package net.ivoa.calycopis.broker.spring.pools;
 import java.util.List;
 
 /**
- * The compute pools a deployment declares at startup.
+ * The compute and storage pools a deployment declares at startup.
  *
- * An empty list means the deployment said nothing, and the bootstrap supplies
- * the default pool.
+ * An empty list means the deployment said nothing. The compute bootstrap then
+ * supplies the default compute pool, and the storage bootstrap supplies both
+ * default storage pools.
  *
  */
-public interface ComputePoolsSettings
+public interface PoolsSettings
     {
     /**
      * The compute pools declared in the configuration.
@@ -52,5 +63,10 @@ public interface ComputePoolsSettings
      */
     public List<ComputePoolSpec> getCompute();
 
-    }
+    /**
+     * The storage pools declared in the configuration.
+     *
+     */
+    public List<StoragePoolSpec> getStorage();
 
+    }

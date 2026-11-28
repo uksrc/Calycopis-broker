@@ -20,7 +20,7 @@
  *
  * AIMetrics: [
  *     {
- *     "interval": "2026-11-16T07:05:00/2026-11-16T08:20:00",
+ *     "timestamp": "2026-11-28T03:00:00",
  *     "name": "@deepseek-ai/dsh",
  *     "version": "0.2.0-rc.2",
  *     "model": "deepseek-v4.1-flash-1017",
@@ -33,38 +33,25 @@
  *
  */
 
-package net.ivoa.calycopis.broker.spring.pools;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+package net.ivoa.calycopis.broker.spring.webapp;
 
 /**
- * Binds the calycopis.broker.pools section of the application configuration.
+ * The request body for creating a storage pool.
  *
- * The list is empty by default, so a broker without a pools.yaml behaves as the
- * parent plan requires: one default pool, created by the bootstrap.
+ * Pools are off-schema, so this record is written by hand rather than generated
+ * from the OpenAPI schema.
+ *
+ * The name is required and is trimmed before the duplicate check. The
+ * description is optional and copied verbatim. The storage class is optional:
+ * an absent or blank value means the default class, while an unknown value is
+ * rejected rather than silently changed. The controller owns those checks, so
+ * the record stays a plain data carrier.
  *
  */
-@Component
-@ConfigurationProperties(prefix = "calycopis.broker.pools")
-public class ComputePoolsSettingsImpl
-implements ComputePoolsSettings
+public record StoragePoolRequest(
+    String name,
+    String description,
+    String storageClass
+    )
     {
-    private List<ComputePoolSpec> compute = new ArrayList<>();
-
-    @Override
-    public List<ComputePoolSpec> getCompute()
-        {
-        return this.compute;
-        }
-
-    public void setCompute(final List<ComputePoolSpec> compute)
-        {
-        this.compute = compute;
-        }
-
     }
-
