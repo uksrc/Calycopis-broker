@@ -1,7 +1,7 @@
 /*
  * <meta:header>
  *   <meta:licence>
- *     Copyright (C) 2024 University of Manchester.
+ *     Copyright (C) 2026 University of Manchester.
  *
  *     This information is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -18,6 +18,18 @@
  *   </meta:licence>
  * </meta:header>
  *
+ * AIMetrics: [
+ *     {
+ *     "interval": "2026-11-27T18:30:00/2026-11-27T18:41:01",
+ *     "name": "@deepseek-ai/dsh",
+ *     "version": "0.2.0-rc.2",
+ *     "model": "deepseek-v4.1-flash-1017",
+ *     "contribution": {
+ *       "value": 36,
+ *       "units": "%"
+ *       }
+ *     }
+ *   ]
  *
  */
 
@@ -40,6 +52,30 @@ extends AbstractStorageReservation
      * 
      */
     public static final URI KIND_DISCRIMINATOR = URI.create("https://www.purl.org/ivoa.net/Calycopis-openapi/schema/v1.0/kinds/storage/simple-storage-resource.yaml") ;
+
+    /**
+     * The minimum size requested for this storage reservation, in GiB.
+     *
+     */
+    public Long getMinRequestedSize();
+
+    /**
+     * The maximum size requested for this storage reservation, in GiB.
+     *
+     */
+    public Long getMaxRequestedSize();
+
+    /**
+     * The minimum size offered for this storage reservation, in GiB.
+     *
+     */
+    public Long getMinOfferedSize();
+
+    /**
+     * The maximum size offered for this storage reservation, in GiB.
+     *
+     */
+    public Long getMaxOfferedSize();
 
     }
 

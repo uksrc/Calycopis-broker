@@ -29,6 +29,16 @@
 #       "value": 15,
 #       "units": "%"
 #       }
+#     },
+#     {
+#     "interval": "2026-11-27T18:30:00/2026-11-27T18:41:01",
+#     "name": "@deepseek-ai/dsh",
+#     "version": "0.2.0-rc.2",
+#     "model": "deepseek-v4.1-flash-1017",
+#     "contribution": {
+#       "value": 10,
+#       "units": "%"
+#       }
 #     }
 #   ]
 #
@@ -153,6 +163,16 @@ class TestDataWithDefaultStorage:
         assert len(offer.data) > 0
         assert offer.storage is not None, "Offer should contain auto-created storage"
         assert len(offer.storage) > 0
+        for storage in offer.storage:
+            assert storage.size is not None, (
+                "Auto-created storage should carry a size"
+            )
+            assert storage.size.min == 1, (
+                f"Expected default minimum size 1, got {storage.size.min}"
+            )
+            assert storage.size.max == 1, (
+                f"Expected default maximum size 1, got {storage.size.max}"
+            )
 
     def test_multiple_data_no_storage(self, client):
         """
@@ -185,3 +205,13 @@ class TestDataWithDefaultStorage:
         assert len(offer.storage) >= 2, (
             f"Should have at least two storage resources (one per data), got {len(offer.storage)}"
         )
+        for storage in offer.storage:
+            assert storage.size is not None, (
+                "Auto-created storage should carry a size"
+            )
+            assert storage.size.min == 1, (
+                f"Expected default minimum size 1, got {storage.size.min}"
+            )
+            assert storage.size.max == 1, (
+                f"Expected default maximum size 1, got {storage.size.max}"
+            )
