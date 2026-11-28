@@ -68,6 +68,16 @@
  *       "value": 5,
  *       "units": "%"
  *       }
+ *     },
+ *     {
+ *     "interval": "2026-11-28T04:50:00/2026-11-28T05:40:00",
+ *     "name": "@deepseek-ai/dsh",
+ *     "version": "0.2.0-rc.2",
+ *     "model": "deepseek-v4.1-flash-1017",
+ *     "contribution": {
+ *       "value": 5,
+ *       "units": "%"
+ *       }
  *     }
  *   ]
  *
@@ -159,6 +169,24 @@ public enum ProblemType
         HttpStatus.CONFLICT,
         "storage-pool-name-in-use",
         "Storage pool name already in use"
+        ),
+
+    INVALID_STORAGE_ALLOCATION(
+        HttpStatus.BAD_REQUEST,
+        "invalid-storage-allocation",
+        "Invalid storage allocation request"
+        ),
+
+    STORAGE_ALLOCATION_NOT_FOUND(
+        HttpStatus.NOT_FOUND,
+        "storage-allocation-not-found",
+        "Storage allocation not found"
+        ),
+
+    STORAGE_ALLOCATION_OVERCOMMITTED(
+        HttpStatus.CONFLICT,
+        "storage-allocation-overcommitted",
+        "Storage allocation would over-commit its pool"
         ),
 
     INVALID_ALLOCATION(

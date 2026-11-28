@@ -55,9 +55,10 @@ Issues: [uksrc/Calycopis-broker#78](https://github.com/uksrc/Calycopis-broker/is
 Parent: [20261125-01-storage-resource-pools-and-booking-across-resource-types](20261125-01-storage-resource-pools-and-booking-across-resource-types-059e5e37.plan.md).
 Builds on: [20261127-02-storage-reservations-record-size-and-hold-the-compute-window](20261127-02-storage-reservations-record-size-and-hold-the-compute-window-0c2eeee5.plan.md),
 merged as [PR #235](https://github.com/uksrc/Calycopis-broker/pull/235).
-Branch: `20261128-zrq-storage-pools-and-admin-api`, to be created from `main` at
+Branch: `20261128-zrq-storage-pools-and-admin-api`, created from `main` at
 `aacee00d`.
-Result: plan only. No implementation or commit yet.
+Result: implemented on branch `20261128-zrq-storage-pools-and-admin-api`,
+commit `a3181e2b`, and merged on `main` as PR #236 at `91fa9cc6`.
 
 ## Target
 
@@ -551,11 +552,12 @@ examples and final hardening (stage 11). Any OpenAPI or client change.
 
 status: implemented
 details: Implemented on branch `20261128-zrq-storage-pools-and-admin-api` from
-  `main` at `aacee00d`, commit `a3181e2b`, and open as
-  [PR #236](https://github.com/uksrc/Calycopis-broker/pull/236). Java compile
-  and all 121 unit tests pass. The Python `docker any` suites passed 186 tests,
-  the `mock any` suites passed 180, and the new admin storage pool tests passed
-  17. The changeset includes the deferred Stage 2 plan-record correction.
+  `main` at `aacee00d`, commit `a3181e2b`, and merged on `main` as
+  [PR #236](https://github.com/uksrc/Calycopis-broker/pull/236) at `91fa9cc6`.
+  Java compile and all 121 unit tests pass. The Python `docker any` suites
+  passed 186 tests, the `mock any` suites passed 180, and the new admin storage
+  pool tests passed 17. The changeset includes the deferred Stage 2 plan-record
+  correction.
 
 ## AIMetrics
 
@@ -583,6 +585,16 @@ AIMetrics: [
     },
     {
     "interval": "2026-11-28T03:31:00/2026-11-28T03:40:00",
+    "name": "@deepseek-ai/dsh",
+    "version": "0.2.0-rc.2",
+    "model": "deepseek-v4.1-flash-1017",
+    "contribution": {
+      "value": 5,
+      "units": "%"
+      }
+    },
+    {
+    "interval": "2026-11-28T05:19:00/2026-11-28T05:22:00",
     "name": "@deepseek-ai/dsh",
     "version": "0.2.0-rc.2",
     "model": "deepseek-v4.1-flash-1017",

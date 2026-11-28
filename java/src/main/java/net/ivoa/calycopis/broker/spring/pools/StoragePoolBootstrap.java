@@ -28,6 +28,16 @@
  *       "value": 100,
  *       "units": "%"
  *       }
+ *     },
+ *     {
+ *     "interval": "2026-11-28T04:50:00/2026-11-28T05:40:00",
+ *     "name": "@deepseek-ai/dsh",
+ *     "version": "0.2.0-rc.2",
+ *     "model": "deepseek-v4.1-flash-1017",
+ *     "contribution": {
+ *       "value": 25,
+ *       "units": "%"
+ *       }
  *     }
  *   ]
  *
@@ -35,6 +45,7 @@
 
 package net.ivoa.calycopis.broker.spring.pools;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -49,6 +60,8 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
+import net.ivoa.calycopis.broker.engine.entities.storage.allocation.simple.SimpleStorageAllocationEntity;
+import net.ivoa.calycopis.broker.engine.entities.storage.allocation.simple.SimpleStorageAllocationEntityFactory;
 import net.ivoa.calycopis.broker.engine.entities.storage.pool.AbstractStorageResourcePool;
 import net.ivoa.calycopis.broker.engine.entities.storage.pool.StorageClass;
 import net.ivoa.calycopis.broker.engine.entities.storage.pool.simple.SimpleStorageResourcePoolEntity;
@@ -84,15 +97,32 @@ implements ApplicationRunner
      */
     public static final String DEFAULT_BIND_DESCRIPTION = "The default bind storage pool." ;
 
+    /**
+     * The size of the allocation the bootstrap supplies when a pool declares
+     * none, in GiB.
+     *
+     */
+    public static final long DEFAULT_ALLOCATION_SIZE_GIB = 1024L ;
+
+    /**
+     * The start of a seeded allocation. The epoch means the allocation has
+     * always been available.
+     *
+     */
+    public static final Instant SEEDED_ALLOCATION_START = Instant.EPOCH ;
+
     private final PoolsSettings settings;
     private final SimpleStorageResourcePoolEntityFactory poolFactory;
+    private final SimpleStorageAllocationEntityFactory allocationFactory;
 
     public StoragePoolBootstrap(
         final PoolsSettings settings,
-        final SimpleStorageResourcePoolEntityFactory poolFactory
+        final SimpleStorageResourcePoolEntityFactory poolFactory,
+        final SimpleStorageAllocationEntityFactory allocationFactory
         ){
         this.settings = settings;
         this.poolFactory = poolFactory;
+        this.allocationFactory = allocationFactory;
         }
 
     @Override
@@ -319,6 +349,110 @@ implements ApplicationRunner
             priority,
             enabled
             );
+        this.seedAllocations(
+            entity,
+            spec
+            );
+        }
+
+    /**
+     * Seed the allocations a pool declares, or one fallback allocation when it
+     * declares none.
+     *
+     */
+    private void seedAllocations(
+        final SimpleStorageResourcePoolEntity pool,
+        final StoragePoolSpec spec
+        ){
+        List<StorageAllocationSpec> declared = spec.getAllocations();
+        if (declared == null || declared.isEmpty())
+            {
+            this.seedAllocation(
+                pool,
+                DEFAULT_ALLOCATION_SIZE_GIB,
+                SEEDED_ALLOCATION_START,
+                null
+                );
+            return;
+            }
+        for (StorageAllocationSpec allocation : declared)
+            {
+            this.seedDeclaredAllocation(
+                pool,
+                allocation
+                );
+            }
+        }
+
+    /**
+     * Seed one declared allocation, skipping an entry that cannot be valid.
+     *
+     */
+    private void seedDeclaredAllocation(
+        final SimpleStorageResourcePoolEntity pool,
+        final StorageAllocationSpec allocation
+        ){
+        if (allocation == null)
+            {
+            log.warn(
+                "Ignoring an empty storage allocation entry for pool [{}]",
+                pool.getName()
+                );
+            return;
+            }
+        Long size = allocation.getSize();
+        if (size == null || size.longValue() <= 0L)
+            {
+            log.warn(
+                "Ignoring a storage allocation with no positive size for pool [{}]",
+                pool.getName()
+                );
+            return;
+            }
+        Instant start = allocation.getStart();
+        if (start == null)
+            {
+            start = SEEDED_ALLOCATION_START;
+            }
+        Instant end = allocation.getEnd();
+        if (end != null && !end.isAfter(start))
+            {
+            log.warn(
+                "Ignoring a storage allocation that ends before it starts for pool [{}]",
+                pool.getName()
+                );
+            return;
+            }
+        this.seedAllocation(
+            pool,
+            size.longValue(),
+            start,
+            end
+            );
+        }
+
+    /**
+     * Create one allocation and log it.
+     *
+     */
+    private void seedAllocation(
+        final SimpleStorageResourcePoolEntity pool,
+        final long size,
+        final Instant start,
+        final Instant end
+        ){
+        SimpleStorageAllocationEntity allocation = this.allocationFactory.create(
+            pool,
+            size,
+            start,
+            end
+            );
+        log.info(
+            "Created storage allocation [{}] for pool [{}] with [{}] GiB",
+            allocation.getUuid(),
+            pool.getName(),
+            size
+            );
         }
 
     /**
@@ -364,6 +498,9 @@ implements ApplicationRunner
             );
         target.setStorageClass(
             storageClass.name()
+            );
+        target.setAllocations(
+            source.getAllocations()
             );
         return target;
         }

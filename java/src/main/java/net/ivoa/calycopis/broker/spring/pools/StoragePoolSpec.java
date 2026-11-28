@@ -28,12 +28,24 @@
  *       "value": 100,
  *       "units": "%"
  *       }
+ *     },
+ *     {
+ *     "interval": "2026-11-28T04:50:00/2026-11-28T05:40:00",
+ *     "name": "@deepseek-ai/dsh",
+ *     "version": "0.2.0-rc.2",
+ *     "model": "deepseek-v4.1-flash-1017",
+ *     "contribution": {
+ *       "value": 10,
+ *       "units": "%"
+ *       }
  *     }
  *   ]
  *
  */
 
 package net.ivoa.calycopis.broker.spring.pools;
+
+import java.util.List;
 
 /**
  * One storage pool as it is written in pools.yaml.
@@ -50,6 +62,7 @@ public class StoragePoolSpec
     private Integer priority;
     private Boolean enabled;
     private String storageClass;
+    private List<StorageAllocationSpec> allocations;
 
     public String getName()
         {
@@ -99,6 +112,16 @@ public class StoragePoolSpec
     public void setStorageClass(final String storageClass)
         {
         this.storageClass = storageClass;
+        }
+
+    public List<StorageAllocationSpec> getAllocations()
+        {
+        return this.allocations;
+        }
+
+    public void setAllocations(final List<StorageAllocationSpec> allocations)
+        {
+        this.allocations = allocations;
         }
 
     }

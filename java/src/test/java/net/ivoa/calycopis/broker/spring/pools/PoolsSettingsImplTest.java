@@ -48,6 +48,16 @@
  *       "value": 10,
  *       "units": "%"
  *       }
+ *     },
+ *     {
+ *     "interval": "2026-11-28T04:50:00/2026-11-28T05:40:00",
+ *     "name": "@deepseek-ai/dsh",
+ *     "version": "0.2.0-rc.2",
+ *     "model": "deepseek-v4.1-flash-1017",
+ *     "contribution": {
+ *       "value": 10,
+ *       "units": "%"
+ *       }
  *     }
  *   ]
  *
@@ -55,6 +65,7 @@
 
 package net.ivoa.calycopis.broker.spring.pools;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -306,6 +317,55 @@ public class PoolsSettingsImplTest
                         );
                 }
             );
+        }
+
+    /**
+     * A configured storage allocation must reach the settings bean.
+     *
+     */
+    @Test
+    public void testBindsConfiguredStorageAllocation()
+        {
+        contextRunner
+            .withPropertyValues(
+                "calycopis.broker.pools.storage[0].name=archive",
+                "calycopis.broker.pools.storage[0].allocations[0].size=512",
+                "calycopis.broker.pools.storage[0].allocations[0].start=2026-12-01T00:00:00Z",
+                "calycopis.broker.pools.storage[0].allocations[0].end=2026-12-02T00:00:00Z"
+                )
+            .run(
+                context -> {
+                    PoolsSettings settings = context.getBean(
+                        PoolsSettings.class
+                        );
+                    StoragePoolSpec spec = settings.getStorage().get(0);
+                    Assertions.assertNotNull(
+                        spec.getAllocations(),
+                        "The configured storage allocations must not be null"
+                        );
+                    Assertions.assertEquals(
+                        1,
+                        spec.getAllocations().size(),
+                        "One configured storage allocation must reach the settings bean"
+                        );
+                    StorageAllocationSpec allocation = spec.getAllocations().get(0);
+                    Assertions.assertEquals(
+                        512L,
+                        allocation.getSize().longValue(),
+                        "The configured allocation size must reach the settings bean"
+                        );
+                    Assertions.assertEquals(
+                        Instant.parse("2026-12-01T00:00:00Z"),
+                        allocation.getStart(),
+                        "The configured allocation start must reach the settings bean"
+                        );
+                    Assertions.assertEquals(
+                        Instant.parse("2026-12-02T00:00:00Z"),
+                        allocation.getEnd(),
+                        "The configured allocation end must reach the settings bean"
+                        );
+                    }
+                );
         }
 
     /**
