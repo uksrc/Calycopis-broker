@@ -88,6 +88,16 @@
 #       "value": 5,
 #       "units": "%"
 #       }
+#     },
+#     {
+#     "interval": "2026-11-27T18:30:00/2026-11-27T18:41:01",
+#     "name": "@deepseek-ai/dsh",
+#     "version": "0.2.0-rc.2",
+#     "model": "deepseek-v4.1-flash-1017",
+#     "contribution": {
+#       "value": 20,
+#       "units": "%"
+#       }
 #     }
 #   ]
 #
@@ -298,6 +308,104 @@ class StateDatabase:
                 ac.uuid = lc.uuid
             WHERE
                 ac.session = %s
+            """,
+            (session_uuid,),
+        )
+        return [row[0] for row in rows]
+
+    def storage_reservation(self, session_uuid):
+        """
+        The first stored storage reservation for a session.
+
+        Returns the four size columns followed by the seven lifecycle
+        schedule columns, in this order:
+        minrequestedsize, maxrequestedsize, minofferedsize, maxofferedsize,
+        prepare_start, prepare_duration, available_start,
+        available_start_duration, available_duration, release_start,
+        release_duration.
+        """
+        rows = self._select_all(
+            """
+            SELECT
+                z.minrequestedsize,
+                z.maxrequestedsize,
+                z.minofferedsize,
+                z.maxofferedsize,
+                lc.prepare_start_instant_seconds,
+                lc.prepare_duration_seconds,
+                lc.available_start_instant_seconds,
+                lc.available_start_duration_seconds,
+                lc.available_duration_seconds,
+                lc.release_start_instant_seconds,
+                lc.release_duration_seconds
+            FROM
+                abstractstoragereservations s
+            JOIN
+                lifecyclecomponents lc
+            ON
+                lc.uuid = s.uuid
+            JOIN
+                simplestoragereservations z
+            ON
+                z.uuid = s.uuid
+            WHERE
+                s.session = %s
+            ORDER BY
+                s.uuid
+            """,
+            (session_uuid,),
+        )
+        if len(rows) == 0:
+            return None
+        return rows[0]
+
+    def compute_reservation_schedule(self, session_uuid):
+        """
+        The lifecycle schedule columns of a session's compute reservation.
+
+        Returns prepare_start, prepare_duration, available_start,
+        available_duration, release_start and release_duration.
+        """
+        rows = self._select_all(
+            """
+            SELECT
+                lc.prepare_start_instant_seconds,
+                lc.prepare_duration_seconds,
+                lc.available_start_instant_seconds,
+                lc.available_duration_seconds,
+                lc.release_start_instant_seconds,
+                lc.release_duration_seconds
+            FROM
+                abstractcomputereservations ac
+            JOIN
+                lifecyclecomponents lc
+            ON
+                lc.uuid = ac.uuid
+            WHERE
+                ac.session = %s
+            """,
+            (session_uuid,),
+        )
+        if len(rows) == 0:
+            return None
+        return rows[0]
+
+    def data_prepare_durations(self, session_uuid):
+        """
+        The stored prepare durations of a session's data resources.
+        """
+        rows = self._select_all(
+            """
+            SELECT
+                lc.prepare_duration_seconds
+            FROM
+                abstractdataresources ad
+            JOIN
+                lifecyclecomponents lc
+            ON
+                lc.uuid = ad.uuid
+            WHERE
+                ad.session = %s
             """,
             (session_uuid,),
         )

@@ -68,6 +68,16 @@
 #       "value": 10,
 #       "units": "%"
 #       }
+#     },
+#     {
+#     "interval": "2026-11-27T18:30:00/2026-11-27T18:41:01",
+#     "name": "@deepseek-ai/dsh",
+#     "version": "0.2.0-rc.2",
+#     "model": "deepseek-v4.1-flash-1017",
+#     "contribution": {
+#       "value": 4,
+#       "units": "%"
+#       }
 #     }
 #   ]
 #
@@ -258,6 +268,19 @@ class TestDockerVolumeMount:
 
         offer = response.offers[0]
         offer_uuid = offer.meta.uuid
+
+        assert offer.storage is not None, "Offer should include storage resources"
+        assert len(offer.storage) > 0, "Offer should have at least one storage resource"
+        storage = offer.storage[0]
+        assert storage.size is not None, (
+            "Volume-mounted storage should carry the default size"
+        )
+        assert storage.size.min == 1, (
+            f"Expected default minimum size 1, got {storage.size.min}"
+        )
+        assert storage.size.max == 1, (
+            f"Expected default maximum size 1, got {storage.size.max}"
+        )
 
         client.set_session_phase(
             offer_uuid,

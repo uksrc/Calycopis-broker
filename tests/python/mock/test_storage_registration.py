@@ -28,6 +28,16 @@
 #       "value": 100,
 #       "units": "%"
 #       }
+#     },
+#     {
+#     "interval": "2026-11-27T18:30:00/2026-11-27T18:41:01",
+#     "name": "@deepseek-ai/dsh",
+#     "version": "0.2.0-rc.2",
+#     "model": "deepseek-v4.1-flash-1017",
+#     "contribution": {
+#       "value": 10,
+#       "units": "%"
+#       }
 #     }
 #   ]
 #
@@ -61,6 +71,7 @@ Usage:
 from calycopis_openapi_client.models import (
     ExecutionRequest,
     OfferSetResponse,
+    SimpleStorageSize,
 )
 from calycopis_openapi_client.models.docker_image_spec import DockerImageSpec
 from calycopis_openapi_client.models.component_metadata import ComponentMetadata
@@ -152,6 +163,55 @@ class TestDataReferencingNamedStorage:
         assert data_resource.storage == storage_uuid, (
             f"Data storage ref [{data_resource.storage}] "
             f"should match storage UUID [{storage_uuid}]"
+        )
+        assert storage_resource.size is not None, (
+            "Storage should carry the default size"
+        )
+        assert storage_resource.size.min == 1, (
+            f"Expected default minimum size 1, got {storage_resource.size.min}"
+        )
+        assert storage_resource.size.max == 1, (
+            f"Expected default maximum size 1, got {storage_resource.size.max}"
+        )
+
+    def test_named_storage_records_requested_size(self, client):
+        """
+        An explicit SimpleStorageSize is persisted and returned in the offer.
+        """
+        request = ExecutionRequest(
+            executable=_make_executable("sized-storage"),
+            storage=[
+                SimpleStorageResource(
+                    meta=ComponentMetadata(name="sized-storage"),
+                    size=SimpleStorageSize(min=4, max=8),
+                ),
+            ],
+            data=[
+                SimpleDataResource(
+                    meta=ComponentMetadata(name="sized-data"),
+                    storage="sized-storage",
+                    location="https://example.org/data/sized-file.fits",
+                ),
+            ],
+        )
+        response = _submit(client, request)
+
+        assert response.result == "YES", (
+            f"Expected YES, got {response.result}. "
+            f"Messages: {response.meta.messages if response.meta else 'none'}"
+        )
+        assert response.offers is not None
+        assert len(response.offers) > 0
+
+        storage_resource = response.offers[0].storage[0]
+        assert storage_resource.size is not None, (
+            "Storage should carry the requested size"
+        )
+        assert storage_resource.size.min == 4, (
+            f"Expected minimum size 4, got {storage_resource.size.min}"
+        )
+        assert storage_resource.size.max == 8, (
+            f"Expected maximum size 8, got {storage_resource.size.max}"
         )
 
     def test_multiple_data_same_named_storage(self, client):

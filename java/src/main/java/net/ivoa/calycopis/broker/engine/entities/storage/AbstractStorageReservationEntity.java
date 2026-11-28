@@ -58,6 +58,16 @@
  *       "value": 10,
  *       "units": "%"
  *       }
+ *     },
+ *     {
+ *     "interval": "2026-11-27T18:30:00/2026-11-27T18:41:01",
+ *     "name": "@deepseek-ai/dsh",
+ *     "version": "0.2.0-rc.2",
+ *     "model": "deepseek-v4.1-flash-1017",
+ *     "contribution": {
+ *       "value": 14,
+ *       "units": "%"
+ *       }
  *     }
  *   ]
  *
@@ -82,6 +92,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.ivoa.calycopis.broker.engine.entities.component.LifecycleComponentEntity;
 import net.ivoa.calycopis.broker.engine.entities.compute.AbstractComputeReservationEntity;
 import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceEntity;
+import net.ivoa.calycopis.broker.engine.entities.data.AbstractDataResourceValidator;
 import net.ivoa.calycopis.broker.engine.entities.session.simple.SimpleExecutionSessionEntity;
 import net.ivoa.calycopis.broker.engine.entities.volume.AbstractVolumeMountEntity;
 import net.ivoa.calycopis.broker.engine.util.ListWrapper;
@@ -133,23 +144,59 @@ implements AbstractStorageReservation
             );
 
         //
-        // Start preparing when the session starts preparing.
+        // A storage reservation holds the compute candidate's window. The
+        // parser builds compute before storage, and the compute reservation
+        // already carries the offer-derived absolute schedule.
+        AbstractComputeReservationEntity compute = session.getComputeReservation();
+        if (compute == null)
+            {
+            throw new IllegalStateException(
+                "A storage reservation requires a compute reservation"
+                );
+            }
+
+        //
+        // The latest data resource must finish preparing when compute starts
+        // preparing, so storage has to be available before every data
+        // preparation. The data entities are built after storage, but the
+        // validator result carries their prepare durations.
+        long dataPrepareSeconds = maxDataPrepareDuration(result);
+        long storageAvailableStartSeconds = compute.getPrepareStartInstantSeconds() - dataPrepareSeconds;
+        long storageAvailableEndSeconds = compute.getAvailableStartInstantSeconds() + compute.getAvailableDurationSeconds();
+
+        //
+        // Storage prepares before it becomes available, and stays available
+        // through data download and compute execution.
         this.prepareDurationSeconds     = result.getPrepareDuration();
-        this.prepareStartInstantSeconds = session.getPrepareStartInstantSeconds();
-
-        //
-        // Available as soon as the preparation is done.
-        this.availableDurationSeconds      = 0L;
+        this.prepareStartInstantSeconds = storageAvailableStartSeconds - this.prepareDurationSeconds;
+        this.availableStartInstantSeconds  = storageAvailableStartSeconds;
         this.availableStartDurationSeconds = 0L;
-        this.availableStartInstantSeconds  = this.prepareStartInstantSeconds + this.prepareDurationSeconds;
+        this.availableDurationSeconds      = storageAvailableEndSeconds - storageAvailableStartSeconds;
 
         //
-        // Start releasing after availability ends.
-        // TODO Start releasing after DATA releasing ends.
-        // TODO Do we need to calculate this, or is it controlled by the lifecycle management?
-        this.releaseDurationSeconds     = result.getReleaseDuration(); 
-        this.releaseStartInstantSeconds = this.availableStartInstantSeconds + this.availableDurationSeconds + 10L ;         
+        // Release after the compute release ends. The lifecycle rules still
+        // wait for the dependent compute and data resources to be RELEASED.
+        this.releaseDurationSeconds     = result.getReleaseDuration();
+        this.releaseStartInstantSeconds = compute.getReleaseStartInstantSeconds() + compute.getReleaseDurationSeconds();
 
+        }
+
+    /**
+     * The largest prepare duration among the data resources this storage serves.
+     *
+     */
+    private static long maxDataPrepareDuration(final AbstractStorageReservationValidator.Result result)
+        {
+        long max = 0L;
+        for (AbstractDataResourceValidator.Result dataResult : result.getDataResourceResults())
+            {
+            Long duration = dataResult.getPrepareDuration();
+            if ((duration != null) && (duration > max))
+                {
+                max = duration;
+                }
+            }
+        return max;
         }
 
     @JoinColumn(name = "session", referencedColumnName = "uuid", nullable = false)
