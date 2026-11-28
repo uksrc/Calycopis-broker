@@ -27,7 +27,7 @@ todos:
     status: completed
   - id: "commit"
     content: "Commit through bin/agent-commit after approval, push the fork and open the pull request"
-    status: pending
+    status: completed
 isProject: false
 ---
 # Plan: Storage reservations record size and hold the compute window
@@ -378,9 +378,11 @@ configuration examples.
 
 status: implemented
 details: Implemented on branch `20261127-zrq-storage-size-and-window` from
-  `3224d127`. Java compile and all 105 unit tests pass. The Python `any` suite
-  passed 106 tests, the `mock` suite passed 57, the `docker` suite passed 63,
-  and the new state size/window test passed. Commit pending approval.
+  `3224d127`, commit `9147d162`, and merged as
+  [PR #235](https://github.com/uksrc/Calycopis-broker/pull/235) at `aacee00d`.
+  Java compile and all 105 unit tests pass. The Python `any` suite passed 106
+  tests, the `mock` suite passed 57, the `docker` suite passed 63, and the new
+  state size/window test passed.
 
 ## AIMetrics
 
@@ -393,6 +395,16 @@ AIMetrics: [
     "model": "deepseek-v4.1-flash-1017",
     "contribution": {
       "value": 100,
+      "units": "%"
+      }
+    },
+    {
+    "interval": "2026-11-28T03:00:00/2026-11-28T03:31:00",
+    "name": "@deepseek-ai/dsh",
+    "version": "0.2.0-rc.2",
+    "model": "deepseek-v4.1-flash-1017",
+    "contribution": {
+      "value": 5,
       "units": "%"
       }
     }

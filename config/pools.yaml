@@ -58,6 +58,16 @@
 #       "value": 10,
 #       "units": "%"
 #       }
+#     },
+#     {
+#     "timestamp": "2026-11-28T03:00:00",
+#     "name": "@deepseek-ai/dsh",
+#     "version": "0.2.0-rc.2",
+#     "model": "deepseek-v4.1-flash-1017",
+#     "contribution": {
+#       "value": 5,
+#       "units": "%"
+#       }
 #     }
 #   ]
 #
@@ -170,3 +180,34 @@ calycopis:
                     name: utc-office-hours
                     startHour: 9
                     endHour: 17
+#
+# The storage pools this deployment declares.
+#
+# A storage pool serves exactly one storage class:
+#
+#   VOLUME  broker-managed storage, including explicit storage and http(s) data.
+#   BIND    host-path-backed storage, including auto-created file:// storage.
+#
+# The broker always seeds both "default-volume" and "default-bind", whether or
+# not this list names them. A declaration for either default can set its
+# description, priority and enabled flag, but its class is forced to the class
+# its name promises. A non-default pool with no storageClass defaults to VOLUME;
+# an unknown class is logged and skipped, so a typo cannot create a pool that
+# serves no known class.
+#
+# Offer generation and capacity do not read these pools yet. Allocations and
+# policies arrive in later stages.
+#
+            storage:
+              -
+                name: default-volume
+                description: The default volume storage pool.
+                storageClass: VOLUME
+                priority: 0
+                enabled: true
+              -
+                name: default-bind
+                description: The default bind storage pool.
+                storageClass: BIND
+                priority: 0
+                enabled: true

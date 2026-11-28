@@ -58,6 +58,16 @@
  *       "value": 20,
  *       "units": "%"
  *       }
+ *     },
+ *     {
+ *     "timestamp": "2026-11-28T03:00:00",
+ *     "name": "@deepseek-ai/dsh",
+ *     "version": "0.2.0-rc.2",
+ *     "model": "deepseek-v4.1-flash-1017",
+ *     "contribution": {
+ *       "value": 5,
+ *       "units": "%"
+ *       }
  *     }
  *   ]
  *
@@ -131,6 +141,24 @@ public enum ProblemType
         HttpStatus.CONFLICT,
         "pool-name-in-use",
         "Compute pool name already in use"
+        ),
+
+    INVALID_STORAGE_POOL(
+        HttpStatus.BAD_REQUEST,
+        "invalid-storage-pool",
+        "Invalid storage pool request"
+        ),
+
+    STORAGE_POOL_NOT_FOUND(
+        HttpStatus.NOT_FOUND,
+        "storage-pool-not-found",
+        "Storage pool not found"
+        ),
+
+    STORAGE_POOL_NAME_IN_USE(
+        HttpStatus.CONFLICT,
+        "storage-pool-name-in-use",
+        "Storage pool name already in use"
         ),
 
     INVALID_ALLOCATION(

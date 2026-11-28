@@ -38,6 +38,16 @@
  *       "value": 20,
  *       "units": "%"
  *       }
+ *     },
+ *     {
+ *     "timestamp": "2026-11-28T03:00:00",
+ *     "name": "@deepseek-ai/dsh",
+ *     "version": "0.2.0-rc.2",
+ *     "model": "deepseek-v4.1-flash-1017",
+ *     "contribution": {
+ *       "value": 10,
+ *       "units": "%"
+ *       }
  *     }
  *   ]
  *
@@ -57,14 +67,15 @@ import org.springframework.context.annotation.Configuration;
 import net.ivoa.calycopis.broker.engine.entities.compute.pool.AbstractComputeResourcePool;
 
 /**
- * Tests for the compute pool settings and the pool the bootstrap falls back to.
+ * Tests for the pools settings and the compute pool the bootstrap falls back to.
  *
- * The binding test covers the path from the property names in pools.yaml to the
- * settings bean. The resolve tests cover the rule that matters when a deployment
- * says nothing: one pool, called default.
+ * The binding tests cover the path from the property names in pools.yaml to the
+ * settings bean, for both compute and storage. The resolve tests cover the
+ * compute rule that matters when a deployment says nothing: one pool, called
+ * default.
  *
  */
-public class ComputePoolsSettingsImplTest
+public class PoolsSettingsImplTest
     {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withUserConfiguration(
@@ -81,8 +92,8 @@ public class ComputePoolsSettingsImplTest
         {
         contextRunner.run(
             context -> {
-                ComputePoolsSettings settings = context.getBean(
-                    ComputePoolsSettings.class
+                PoolsSettings settings = context.getBean(
+                    PoolsSettings.class
                     );
                 Assertions.assertNotNull(
                     settings.getCompute(),
@@ -110,8 +121,8 @@ public class ComputePoolsSettingsImplTest
                 )
             .run(
                 context -> {
-                    ComputePoolsSettings settings = context.getBean(
-                        ComputePoolsSettings.class
+                    PoolsSettings settings = context.getBean(
+                        PoolsSettings.class
                         );
                     Assertions.assertEquals(
                         1,
@@ -220,11 +231,89 @@ public class ComputePoolsSettingsImplTest
         }
 
     /**
+     * With no configuration the storage list must be empty too.
+     *
+     */
+    @Test
+    public void testDefaultsToNoConfiguredStoragePools()
+        {
+        contextRunner.run(
+            context -> {
+                PoolsSettings settings = context.getBean(
+                    PoolsSettings.class
+                    );
+                Assertions.assertNotNull(
+                    settings.getStorage(),
+                    "The configured storage pools must not be null"
+                    );
+                Assertions.assertTrue(
+                    settings.getStorage().isEmpty(),
+                    "The configured storage pools must be empty by default"
+                    );
+                }
+            );
+        }
+
+    /**
+     * A configured storage pool must reach the bean with its class and settings.
+     *
+     */
+    @Test
+    public void testBindsConfiguredStoragePools()
+        {
+        contextRunner
+            .withPropertyValues(
+                "calycopis.broker.pools.storage[0].name=archive",
+                "calycopis.broker.pools.storage[0].description=The archive pool.",
+                "calycopis.broker.pools.storage[0].storageClass=BIND",
+                "calycopis.broker.pools.storage[0].priority=10",
+                "calycopis.broker.pools.storage[0].enabled=false"
+                )
+            .run(
+                context -> {
+                    PoolsSettings settings = context.getBean(
+                        PoolsSettings.class
+                        );
+                    Assertions.assertEquals(
+                        1,
+                        settings.getStorage().size(),
+                        "One configured storage pool must reach the settings bean"
+                        );
+                    StoragePoolSpec spec = settings.getStorage().get(0);
+                    Assertions.assertEquals(
+                        "archive",
+                        spec.getName(),
+                        "The configured pool name must reach the settings bean"
+                        );
+                    Assertions.assertEquals(
+                        "The archive pool.",
+                        spec.getDescription(),
+                        "The configured pool description must reach the settings bean"
+                        );
+                    Assertions.assertEquals(
+                        "BIND",
+                        spec.getStorageClass(),
+                        "The configured storage class must reach the settings bean"
+                        );
+                    Assertions.assertEquals(
+                        10,
+                        spec.getPriority().intValue(),
+                        "The configured priority must reach the settings bean"
+                        );
+                    Assertions.assertFalse(
+                        spec.getEnabled().booleanValue(),
+                        "The configured enabled flag must reach the settings bean"
+                        );
+                }
+            );
+        }
+
+    /**
      * Register the settings bean for the binding tests.
      *
      */
     @Configuration
-    @EnableConfigurationProperties(ComputePoolsSettingsImpl.class)
+    @EnableConfigurationProperties(PoolsSettingsImpl.class)
     static class PoolsSettingsConfiguration
         {
         }

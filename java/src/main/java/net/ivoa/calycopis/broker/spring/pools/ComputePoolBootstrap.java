@@ -58,6 +58,16 @@
  *       "value": 10,
  *       "units": "%"
  *       }
+ *     },
+ *     {
+ *     "timestamp": "2026-11-28T03:00:00",
+ *     "name": "@deepseek-ai/dsh",
+ *     "version": "0.2.0-rc.2",
+ *     "model": "deepseek-v4.1-flash-1017",
+ *     "contribution": {
+ *       "value": 5,
+ *       "units": "%"
+ *       }
  *     }
  *   ]
  *
@@ -140,13 +150,13 @@ implements ApplicationRunner
      */
     public static final long DEFAULT_ALLOCATION_MEMORY = 256L ;
 
-    private final ComputePoolsSettings settings;
+    private final PoolsSettings settings;
     private final SimpleComputeResourcePoolEntityFactory poolFactory;
     private final SimpleComputeAllocationEntityFactory allocationFactory;
     private final SimpleComputePoolPolicyEntityFactory policyFactory;
 
     public ComputePoolBootstrap(
-        final ComputePoolsSettings settings,
+        final PoolsSettings settings,
         final SimpleComputeResourcePoolEntityFactory poolFactory,
         final SimpleComputeAllocationEntityFactory allocationFactory,
         final SimpleComputePoolPolicyEntityFactory policyFactory

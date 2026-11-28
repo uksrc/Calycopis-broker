@@ -9,7 +9,7 @@ todos:
     status: completed
   - id: "stage-3"
     content: "Stage 3: storage pools, storage classes and the admin API"
-    status: pending
+    status: in-progress
   - id: "stage-4"
     content: "Stage 4: storage allocations and capacity over time"
     status: pending
@@ -849,9 +849,14 @@ details: High-level plan written on 2026-11-25 and updated on 2026-11-26 to add
   `default-bind`) and the bind capacity decision. Stage 1, the storage-resource
   rename to storage reservations, is merged on `main` in PR #234 at `3224d127`.
   Stage 2, recording the reservation size and holding the compute window, is
-  implemented on branch `20261127-zrq-storage-size-and-window`, commit pending
-  approval. Stages 3–11 remain planned. The compute pool prerequisite is
-  complete and merged on `main`. Issues:
+  merged on `main` in [PR #235](https://github.com/uksrc/Calycopis-broker/pull/235)
+  at `aacee00d`. Stage 3, storage pools, storage classes and the admin API, is
+  implemented on branch `20261128-zrq-storage-pools-and-admin-api`, commit
+  `a3181e2b`, and open as
+  [PR #236](https://github.com/uksrc/Calycopis-broker/pull/236); its plan is
+  [20261128-01-storage-pools-storage-classes-and-the-admin-api](20261128-01-storage-pools-storage-classes-and-the-admin-api-48dcd834.plan.md).
+  Merge is pending. Stages 4–11 remain planned. The compute pool
+  prerequisite is complete and merged on `main`. Issues:
   [#169](https://github.com/uksrc/Calycopis-broker/issues/169),
   [#78](https://github.com/uksrc/Calycopis-broker/issues/78) and
   [#216](https://github.com/uksrc/Calycopis-broker/issues/216).
@@ -887,6 +892,26 @@ AIMetrics: [
     "model": "deepseek-v4.1-flash-1017",
     "contribution": {
       "value": 100,
+      "units": "%"
+      }
+    },
+    {
+    "interval": "2026-11-28T03:00:00/2026-11-28T03:31:00",
+    "name": "@deepseek-ai/dsh",
+    "version": "0.2.0-rc.2",
+    "model": "deepseek-v4.1-flash-1017",
+    "contribution": {
+      "value": 5,
+      "units": "%"
+      }
+    },
+    {
+    "interval": "2026-11-28T03:31:00/2026-11-28T03:40:00",
+    "name": "@deepseek-ai/dsh",
+    "version": "0.2.0-rc.2",
+    "model": "deepseek-v4.1-flash-1017",
+    "contribution": {
+      "value": 5,
       "units": "%"
       }
     }
